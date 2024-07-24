@@ -31,6 +31,10 @@ import Splash from "./src/screens/splash";
 import Hostel from "./src/screens/Hostel";
 import ManagerUpload from "./src/screens/Manager Upload";
 import ViewScreen from "./src/screens/View";
+import UploadHostelScreen from "./src/screens/UploadHostelForm";
+import Hdetails from "./src/screens/Hdetails";
+import UploadHdetails from "./src/screens/UploadHdetails";
+import BackCongratualtion from "./src/screens/BackToHome";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,6 +45,7 @@ const TabNavigator = () => (
       name="Hostel"
       component={Hostel} 
       options={{
+        headerShown: false,
         tabBarIcon: ({ color, size }) => (
           <MaterialIcons name="home" color={color} size={size} />
         ),
@@ -50,6 +55,7 @@ const TabNavigator = () => (
       name="Book" 
       component={BookingScreen} 
       options={{
+        headerShown: false,
         tabBarIcon: ({ color, size }) => (
           <MaterialIcons name="book" color={color} size={size} />
         ),
@@ -59,49 +65,9 @@ const TabNavigator = () => (
       name="ProfileScreen" 
       component={ProfileScreen} 
       options={{
+        headerShown: false,
         tabBarIcon: ({ color, size }) => (
           <MaterialIcons name="person" color={color} size={size} />
-        ),
-      }}
-    />
-  </Tab.Navigator>
-);
-
-const TabNavigator2 = () => (
-  <Tab.Navigator>
-    <Tab.Screen
-      name="Mange Hostel" 
-      component={Manage} 
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialIcons name="book" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen 
-      name="Hostel" 
-      component={HostelInfo} 
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialIcons name="home" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen 
-      name="Add Room" 
-      component={AddRoom} 
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialIcons name="home" color={color} size={size} />
-        ),
-      }}
-    />
-    <Tab.Screen 
-      name="Congratualtions" 
-      component={Congratualtion} 
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <MaterialIcons name="home" color={color} size={size} />
         ),
       }}
     />
@@ -190,11 +156,16 @@ function App() {
             component={ManagerUpload} 
             options={{ headerShown: false }}
           />
+          <Stack.Screen 
+            name="UploadHostelScreen"
+            component={UploadHostelScreen} 
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
           name="Manage"
           component={Manage}
           options={{ 
-            headerShown: true,
+            headerShown: false,
             headerTitle: 'My Hostels',
             headerTitleAlign: 'center',
             headerTitleStyle: {
@@ -204,19 +175,43 @@ function App() {
           }}
         />
           <Stack.Screen
-          name="View"
-          component={ViewScreen}
-          options={({ navigation }) => ({
-            headerShown: true,
-            headerTitle: 'Makassela Hostel',
-            headerTitleAlign: 'center',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 24,
-            },
-            headerLeft: () => <BackButton goBack={navigation.goBack} />,
-          })}
+          name="View" 
+        component={ViewScreen} 
+        options={({ navigation }) => ({
+          headerTitle: 'Makassela Hostel', // Or fetch the hostel name dynamically
+          headerLeft: () => <BackButton goBack={navigation.goBack} />,
+        })}
         />
+        <Stack.Screen
+            options={{ headerShown: false }}
+            name="AddRoom"
+            component={AddRoom}
+          />
+        <Stack.Screen
+            options={{ headerShown: false }}
+            name="Congratualtion"
+            component={Congratualtion}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Hdetails"
+            component={Hdetails}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="UploadHdetails"
+            component={UploadHdetails}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="BackCongratualtion"
+            component={BackCongratualtion}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="HostelInfo"
+            component={HostelInfo}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

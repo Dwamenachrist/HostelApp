@@ -12,7 +12,7 @@ const HostelInfo = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.headerText}>Locationn</Text>
+                <Text style={styles.headerText}>Location</Text>
             </View>
 
             <View style={styles.detailsContainer}>

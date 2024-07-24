@@ -26,7 +26,7 @@ const Manage = ({ navigation }) => { // Pass navigation prop for StackNavigator
 			
 			<View>
                 <Button
-				onPress={() => navigation.navigate('Hostel')}
+				onPress={() => navigation.navigate('Payment')}
 				style={styles.button}
 				>
                     Delete                     
@@ -34,7 +34,7 @@ const Manage = ({ navigation }) => { // Pass navigation prop for StackNavigator
 			</View>
 			<View>
 			<Button
-				onPress={() => navigation.navigate('ViewScreen')}
+				onPress={() => navigation.navigate('View')}
 				style={styles.button}
 				>
                     View                     

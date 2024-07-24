@@ -18,7 +18,7 @@ const ManagerUpload = ({navigation}) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-			navigation.navigate("StudentWelcomeScreen")
+			navigation.navigate("UploadHostelScreen")
         }}
       >
         <Image

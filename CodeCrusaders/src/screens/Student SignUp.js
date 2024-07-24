@@ -1,94 +1,131 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
+import { TouchableOpacity, StyleSheet, View, Image, ScrollView } from 'react-native'
 import { Text } from 'react-native-paper'
-import Header from '../components/Header'
 import Button from '../components/Button'
 import TextInput from '../components/TextInput'
-import { AntDesign } from "@expo/vector-icons";
 import { theme } from '../core/theme'
-import { emailValidator } from '../helpers/emailValidator'
-import { passwordValidator } from '../helpers/passwordValidator'
-import { nameValidator } from '../helpers/nameValidator'
+import { AntDesign } from "@expo/vector-icons";
+import * as ImagePicker from 'expo-image-picker'; // Import image picker
 
-export default function StudentSignUp ({ navigation }) {
-  const [name, setName] = useState({ value: '', error: '' })
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [password, setPassword] = useState({ value: '', error: '' })
+export default function StudentSignUp({ navigation }) {
+  const [fullName, setFullName] = useState({ value: '', error: '' });
+  const [school, setSchool] = useState({ value: '', error: '' });
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [password, setPassword] = useState({ value: '', error: '' });
+  const [confirmPassword, setConfirmPassword] = useState({ value: '', error: '' });
+  const [studentIdImage, setStudentIdImage] = useState(null);
 
   const onSignUpPressed = () => {
-    const nameError = nameValidator(name.value)
-    const emailError = emailValidator(email.value)
-    const passwordError = passwordValidator(password.value)
-    if (emailError || passwordError || nameError) {
-      setName({ ...name, error: nameError })
-      setEmail({ ...email, error: emailError })
-      setPassword({ ...password, error: passwordError })
-      return
-    }
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Dashboard' }],
-    })
+    // Add your actual signup logic here
+    console.log("Sign Up button pressed!");
+    // After successful signup, navigate to Home
+    navigation.navigate("TabNavigator", { screen: "Hostel" });
   }
 
+  const pickImage = async () => {
+    // Ask the user for the permission to access the media library
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this app to access your photos!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync();
+
+    // Explore the result
+    console.log(result);
+
+    if (!result.canceled) {
+      setStudentIdImage(result.uri);
+    }
+  };
+
   return (
-      <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <AntDesign
-            style={{ marginRight: 10 }} // Style for the TouchableOpacity
-            name="leftcircleo"
-            size={24}
-            color="black"
-          />
+    <>
+    <Image source={require("../../assets/book.png")} style={styles.image} />
+    <ScrollView>
+    <View style={styles.container}>  
+      
+      {/* Title */}
+      <Text style={styles.title}>Student Registration</Text>
+
+      {/* Form */}
+      <View style={styles.form}>
+        <TextInput
+          label="Full Name"
+          returnKeyType="next"
+          value={fullName.value}
+          onChangeText={(text) => setFullName({ value: text, error: '' })}
+          error={!!fullName.error}
+          errorText={fullName.error}
+        />
+        <TextInput
+          label="School"
+          returnKeyType="next"
+          value={school.value}
+          onChangeText={(text) => setSchool({ value: text, error: '' })}
+          error={!!school.error}
+          errorText={school.error}
+        />
+        <TextInput
+          label="Email"
+          returnKeyType="next"
+          value={email.value}
+          onChangeText={(text) => setEmail({ value: text, error: '' })}
+          error={!!email.error}
+          errorText={email.error}
+          autoCapitalize="none"
+          autoCompleteType="email"
+          textContentType="emailAddress"
+          keyboardType="email-address"
+        />
+        <TextInput
+          label="Password"
+          returnKeyType="next"
+          value={password.value}
+          onChangeText={(text) => setPassword({ value: text, error: '' })}
+          error={!!password.error}
+          errorText={password.error}
+          secureTextEntry
+        />
+        <TextInput
+          label="Confirm Password"
+          returnKeyType="done"
+          value={confirmPassword.value}
+          onChangeText={(text) => setConfirmPassword({ value: text, error: '' })}
+          error={!!confirmPassword.error}
+          errorText={confirmPassword.error}
+          secureTextEntry
+        />
+        {/* Image Picker */}
+        <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+          <AntDesign name="pluscircleo" size={24} color="black" />
+          <Text>Upload picture of student ID</Text>
         </TouchableOpacity>
-        <Header>Student Registration</Header>
       </View>
-      <TextInput
-        label="Name"
-        returnKeyType="next"
-        value={name.value}
-        onChangeText={(text) => setName({ value: text, error: '' })}
-        error={!!name.error}
-        errorText={name.error}
-      />
-      <TextInput
-        label="Email"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
-      <TextInput
-        label="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: '' })}
-        error={!!password.error}
-        errorText={password.error}
-        secureTextEntry
-      />
+
+      {/* Sign Up Button */}
       <Button
         mode="contained"
         onPress={onSignUpPressed}
-        style={{ marginTop: 24 }}
+        style={styles.signUpButton} // Style for the signup button
       >
-        Sign Up
+        Continue
       </Button>
-      <View style={styles.row}>
-        <Text>Already have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace('SignInScreen')}>
-          <Text style={styles.link}>Login</Text>
+
+      {/* Login Link */}
+      <View style={styles.loginContainer}>
+        <Text style={styles.loginText}>Already have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.replace("StudentSignIn")}>
+          <Text style={styles.loginLink}>Login</Text>
         </TouchableOpacity>
       </View>
-      </View>
-  )
-}
+    </View>
+    </ScrollView>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -96,17 +133,48 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginHorizontal: 20,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 40, // Increased margin for spacing
+  image: {
+    width: '100%', // Adjust as needed
+    height: 200, // Adjust as needed
+    resizeMode: 'cover', // Adjust as needed
   },
-  row: {
-    flexDirection: 'row',
-    marginTop: 4,
-  },
-  link: {
+  title: {
+    textAlign: 'center',
     fontWeight: 'bold',
-    color: theme.colors.primary,
+    fontSize: 24,
+    marginVertical: 10,
   },
-})
+  form: {
+    marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "gray",
+    marginBottom: 20, // Added margin between input fields
+    padding: 1,
+    borderRadius: 10,
+  },
+  imagePicker: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  signUpButton: {
+    backgroundColor: theme.colors.primary, // Use your theme color
+    borderRadius: 25, // Make the button rounded
+    padding: 10,
+  },
+  loginContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  loginText: {
+    color: "#7C7C7C",
+  },
+  loginLink: {
+    color: theme.colors.primary,
+    fontWeight: "bold",
+  },
+});

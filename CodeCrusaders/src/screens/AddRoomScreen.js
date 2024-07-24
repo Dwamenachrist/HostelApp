@@ -8,20 +8,15 @@ import {
     SafeAreaView
 } from 'react-native';
 import Button from '../components/Button';
+import { Ionicons } from '@expo/vector-icons';
 
-const AddRoom = () => {
+const AddRoom = ({navigation}) => {
     const [hostelName, setHostelName] = useState('');
     const [roomType, setRoomType] = useState('One in a room'); 
     const [roomNumber, setRoomNumber] = useState('');
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TextInput
-                    style={styles.hostelNameInput}
-                    value={hostelName}
-                    onChangeText={setHostelName}
-                    placeholder="Hostel name"
-                />
                 <Text style={styles.title}>Add a room</Text>
             </View>
 
@@ -41,13 +36,14 @@ const AddRoom = () => {
 
                 <TouchableOpacity style={styles.uploadButton}>
                     <Text style={styles.uploadButtonText}>Upload pictures</Text>
-                    <View style={styles.plusIconContainer}> 
-                        <Text style={styles.plusIcon}>+</Text>
-                    </View>
+                    <Ionicons name="add-circle-outline" size={32} color="black"/>
                 </TouchableOpacity>
             </View>
 
-            <Button style={styles.continueButton}>
+            <Button 
+            style={styles.continueButton}
+            onPress={() => navigation.navigate('Congratualtion')}
+            >
                 <Text style={styles.continueButtonText}>Continue</Text>
             </Button>
         </SafeAreaView>
@@ -58,6 +54,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+        marginTop: 20,
     },
     header: {
         marginBottom: 20,
@@ -107,22 +104,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 15,
+        justifyContent: 'space-between',
     },
     uploadButtonText: {
         fontSize: 16,
         marginRight: 10,
-    },
-    plusIconContainer: {
-        width: 24,
-        height: 24,
-        borderRadius: 12,
-        backgroundColor: 'lightgray',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    plusIcon: {
-        fontSize: 20,
-        fontWeight: 'bold',
     },
     continueButtonText: {
         fontSize: 18,

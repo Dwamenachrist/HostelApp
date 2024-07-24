@@ -1,101 +1,104 @@
-import React, { useState } from 'react'
-import { TouchableOpacity, StyleSheet, View } from 'react-native'
-import { Text } from 'react-native-paper'
-import Button from '../components/Button'
-import TextInput from '../components/TextInput'
-import { theme } from '../core/theme'
+import React, { useState } from 'react';
+import { TouchableOpacity, StyleSheet, View, Image, ScrollView } from 'react-native';
+import { Text } from 'react-native-paper';
+import Button from '../components/Button';
+import TextInput from '../components/TextInput';
+import { theme } from '../core/theme';
 import { AntDesign } from "@expo/vector-icons";
-import Header from '../components/Header'
+import Header from '../components/Header';
 
 export default function StudentSignIn({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [password, setPassword] = useState({ value: '', error: '' })
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [password, setPassword] = useState({ value: '', error: '' });
 
   const onLoginPressed = () => {
     // Add your actual login logic here
     console.log("Login button pressed!");
     // After successful login, navigate to Home
     navigation.navigate("TabNavigator", { screen: "Hostel" });
-  }
+  };
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <AntDesign
-            style={{ marginRight: 10 }} // Style for the TouchableOpacity
-            name="leftcircleo"
-            size={24}
-            color="black"
-          />
-        </TouchableOpacity>
-        <Header>Welcome Back</Header>
-      </View>
+    <>
+      {/* Image at the Top */}
+      <Image source={require("../../assets/book.png")} style={styles.image} />
 
-      {/* Form */}
-      <View style={styles.form}>
-      <TextInput
-        label="Email"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
-      <TextInput
-        label="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: '' })}
-        error={!!password.error}
-        errorText={password.error}
-        secureTextEntry
-      />
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          {/* Title */}
+          <Text style={styles.title}>Welcome Back</Text>
 
-      {/* "Forgot Password" Link */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate("ResetPasswordScreen")}
-        style={styles.forgotPassword}
-      >
-        <Text style={{ color: "#7C7C7C" }}>Forgot your password?</Text>
-      </TouchableOpacity>
+          {/* Form */}
+          <View style={styles.form}>
+            <TextInput
+              label="Email"
+              returnKeyType="next"
+              value={email.value}
+              onChangeText={(text) => setEmail({ value: text, error: '' })}
+              error={!!email.error}
+              errorText={email.error}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              textContentType="emailAddress"
+              keyboardType="email-address"
+            />
+            <TextInput
+              label="Password"
+              returnKeyType="done"
+              value={password.value}
+              onChangeText={(text) => setPassword({ value: text, error: '' })}
+              error={!!password.error}
+              errorText={password.error}
+              secureTextEntry
+            />
+          </View>
 
-      {/* Login Button */}
-      <Button
-        mode="contained"
-        onPress={onLoginPressed}
-        style={styles.loginButton} // Style for the login button
-      >
-        Login
-      </Button>
+          {/* "Forgot Password" Link */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ResetPasswordScreen")}
+            style={styles.forgotPassword}
+          >
+            <Text style={{ color: "#7C7C7C" }}>Forgot your password?</Text>
+          </TouchableOpacity>
 
-      {/* Sign Up Link */}
-      <View style={styles.signupContainer}>
-        <Text style={styles.signupText}>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace("SignUp")}>
-          <Text style={styles.signupLink}>Sign up</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+          {/* Login Button */}
+          <Button
+            mode="contained"
+            onPress={onLoginPressed}
+            style={styles.loginButton} // Style for the login button
+          >
+            Login
+          </Button>
+
+          {/* Sign Up Link */}
+          <View style={styles.signupContainer}>
+            <Text style={styles.signupText}>Don't have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.replace("StudentSignUp")}>
+              <Text style={styles.signupLink}>Sign up</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 60,
     marginHorizontal: 20,
+    marginBottom: 20,
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 40, // Increased margin for spacing
+  image: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+  },
+  title: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 24,
+    marginVertical: 10,
   },
   form: {
     marginBottom: 20,
@@ -103,16 +106,16 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: "gray",
-    marginBottom: 20, // Added margin between input fields
+    marginBottom: 20,
     padding: 1,
     borderRadius: 10,
   },
   forgotPassword: {
-    alignSelf: "flex-end", // Align to the right
+    alignSelf: "flex-end",
   },
   loginButton: {
-    backgroundColor: theme.colors.primary, // Use your theme color
-    borderRadius: 25, // Make the button rounded
+    backgroundColor: theme.colors.primary,
+    borderRadius: 25,
     padding: 10,
   },
   signupContainer: {

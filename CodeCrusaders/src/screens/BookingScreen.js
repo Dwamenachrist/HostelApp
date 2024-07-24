@@ -18,10 +18,8 @@ const BookingScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerShown: true,
+      headerShown: false,
       title: "Bookings",
-      headerTitleStyle: styles.headerTitle,
-      headerStyle: styles.header,
     });
   }, [navigation]);
 
@@ -69,6 +67,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: "#f8f8f8",
+    marginTop: 30,
   },
   bookingContainer: {
     backgroundColor: "white",

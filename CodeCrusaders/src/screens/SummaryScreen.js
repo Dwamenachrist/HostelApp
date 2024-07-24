@@ -5,7 +5,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Button from "../components/Button";  // Assuming you have a custom Button component
 
-const Summary = () => {
+const Summary = ({navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
                   <View style={styles.hostel}>
@@ -56,7 +56,7 @@ const Summary = () => {
             </View>
             </View>
 
-            <Button onPress={() => navigation.navigate('StudentSignUp')}>
+            <Button onPress={() => navigation.navigate('Payment')}>
             CONTINUE PAYMENT
             </Button>
         </SafeAreaView>

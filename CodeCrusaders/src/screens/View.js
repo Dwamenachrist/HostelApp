@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const ViewScreen = () => {
+const ViewScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.location}>Ayele, Accra</Text>
@@ -17,7 +17,12 @@ const ViewScreen = () => {
         <Text style={styles.infoText}>Occupied rooms</Text>
         <Text style={styles.infoNumber}>8</Text>
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity 
+      style={styles.button} 
+      onPress={() => {
+          navigation.navigate("AddRoom")
+        }}
+      >
         <Text style={styles.buttonText}>Add a room</Text>
       </TouchableOpacity>
     </View>

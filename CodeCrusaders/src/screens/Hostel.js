@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, TextInput, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const hostels = [
@@ -12,6 +12,17 @@ const hostels = [
 ];
 
 const Hostel = () => {
+  const [likedHostels, setLikedHostels] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const toggleLike = (id) => {
+    setLikedHostels((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const filteredHostels = hostels.filter((hostel) => 
+    hostel.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -22,19 +33,23 @@ const Hostel = () => {
         <TextInput
           style={styles.searchInput}
           placeholder="Search hostel and rooms"
+          value={searchQuery}
+          onChangeText={(text) => setSearchQuery(text)}
         />
         <Ionicons name="search" size={24} color="black" />
       </View>
       <ScrollView style={styles.verticalScrollView}>
         <ScrollView horizontal style={styles.scrollView} showsHorizontalScrollIndicator={false}>
-          {hostels.map(hostel => (
+          {filteredHostels.map(hostel => (
             <View key={hostel.id} style={styles.card}>
               <Image source={hostel.image} style={styles.image} />
               <View style={styles.infoRow}>
                 <Text style={styles.discount}>{hostel.discount}</Text>
                 <Ionicons name="star" size={20} color="gold" style={styles.icon} />
                 <Text style={styles.rating}>{hostel.rating}</Text>
-                <Ionicons name="heart-outline" size={20} color="#69b2f6" style={styles.icon} />
+                <TouchableOpacity onPress={() => toggleLike(hostel.id)}>
+                  <Ionicons name={likedHostels[hostel.id] ? "heart" : "heart-outline"} size={20} color={likedHostels[hostel.id] ? "red" : "#69b2f6"} style={styles.icon} />
+                </TouchableOpacity>
               </View>
               <Text style={styles.hostelName}>{hostel.name}</Text>
               <Text style={styles.price}>{hostel.price}</Text>
@@ -55,7 +70,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#00AEEF',
-    height: '20%', 
+    height: '20%',
     justifyContent: 'center',
   },
   headerText: {
@@ -138,7 +153,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginLeft: 20,
-   
   },
 });
 
