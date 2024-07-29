@@ -35,11 +35,14 @@ import UploadHostelScreen from "./src/screens/UploadHostelForm";
 import Hdetails from "./src/screens/Hdetails";
 import UploadHdetails from "./src/screens/UploadHdetails";
 import BackCongratualtion from "./src/screens/BackToHome";
+import ResetPassword from "./src/screens/ResetPasswordScreen";
+import { AuthProvider } from "./src/components/AuthContext";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
  
 const TabNavigator = () => (
+  <AuthProvider>
   <Tab.Navigator>
     <Tab.Screen 
       name="Hostel"
@@ -72,12 +75,14 @@ const TabNavigator = () => (
       }}
     />
   </Tab.Navigator>
+  </AuthProvider>
 );
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
+    <AuthProvider>
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Splash">
@@ -212,9 +217,15 @@ function App() {
             name="HostelInfo"
             component={HostelInfo}
           />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="ResetPassword"
+            component={ResetPassword}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
+    </AuthProvider>
   );
 };
 

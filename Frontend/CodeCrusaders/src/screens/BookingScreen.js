@@ -13,7 +13,9 @@ const BookingScreen = () => {
     rating: 4.5,
     checkIn: "24-Oct-2023",
     checkOut: "24-Oct-2023",
-    roomType: "One in a room"
+    roomType: "One in a room",
+    price: "Ghc 14,000.00",
+    status: "Ongoing"
   };
 
   useLayoutEffect(() => {
@@ -46,17 +48,61 @@ const BookingScreen = () => {
               <Text style={styles.detailValue}>{sampleData.checkOut}</Text>
             </View>
           </View>
+          <View style={styles.detailRow}>
           <View style={styles.detailColumn}>
             <Text style={styles.detailTitle}>Room Type</Text>
             <Text style={styles.detailValue}>{sampleData.roomType}</Text>
           </View>
-          <Button 
-          onPress={() => navigation.navigate('Summary')}
-          >
-            <Text style={styles.bookButtonText}>Book now</Text>
-          </Button>
+          <View style={styles.detailColumn}>
+            <Text style={styles.detailTitle}>Price</Text>
+            <Text style={styles.detailValue}>{sampleData.price}</Text>
+          </View>
+          </View>
+
+          <View style={styles.detailRow}>
+            <Text style={styles.detailTitle}>Booking Status</Text>
+            <Text style={styles.detailValue}>{sampleData.status}</Text>
+          </View>
         </View>
       </Pressable>
+      <View style={styles.bookingContainer}>
+          <Text style={styles.bookingName}>
+            {sampleData.name}
+          </Text>
+          <View style={styles.bookingDetails}>
+            <MaterialIcons name="stars" size={24} color="#ffd700" />
+            <Text style={styles.bookingRating}>
+              {sampleData.rating}
+            </Text>
+          </View>
+          <View style={styles.detailRow}>
+            <View style={styles.detailColumn}>
+              <Text style={styles.detailTitle}>Check In</Text>
+              <Text style={styles.detailValue}>{sampleData.checkIn}</Text>
+            </View>
+            <View style={styles.detailColumn}>
+              <Text style={styles.detailTitle}>Check Out</Text>
+              <Text style={styles.detailValue}>{sampleData.checkOut}</Text>
+            </View>
+          </View>
+          <View style={styles.detailRow}>
+          <View style={styles.detailColumn}>
+            <Text style={styles.detailTitle}>Room Type</Text>
+            <Text style={styles.detailValue}>{sampleData.roomType}</Text>
+          </View>
+          <View style={styles.detailColumn}>
+            <Text style={styles.detailTitle}>Price</Text>
+            <Text style={styles.detailValue}>{sampleData.price}</Text>
+          </View>
+          </View>
+
+          <View style={styles.detailRow}>
+            <Text style={styles.detailTitle}>Booking Status</Text>
+            <Text style={styles.detailValue}>Closed</Text>
+          </View>
+          
+          
+        </View>
     </SafeAreaView>
   );
 };

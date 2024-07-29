@@ -1,20 +1,23 @@
+// components/ManagerSignUp.js
+
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import Header from '../components/Header';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 import { emailValidator } from '../helpers/emailValidator';
 import { passwordValidator } from '../helpers/passwordValidator';
 import { nameValidator } from '../helpers/nameValidator';
+import * as ImagePicker from 'expo-image-picker'; // Import image picker
 
 export default function ManagerSignUp({ navigation }) {
   const [name, setName] = useState({ value: '', error: '' });
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [confirmPassword, setConfirmPassword] = useState({ value: '', error: '' });
+  const [businessCertificate, setBusinessCertificate] = useState(null);
 
   const onSignUpPressed = () => {
     const nameError = nameValidator(name.value);
@@ -37,15 +40,28 @@ export default function ManagerSignUp({ navigation }) {
     });
   };
 
+  const pickImage = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      Alert.alert("Permission Required", "You've refused to allow this app to access your photos!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync();
+
+    if (!result.canceled) {
+      setBusinessCertificate(result.assets[0].uri); // Updated for latest Expo SDK format
+    }
+  };
+
   return (
     <View style={styles.container}>
-    <View>
       <Image
         source={require('../../assets/manager 1.png')}
-        style={styles.imageBackground}
+        style={styles.image}
       />
-    </View>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+
         <Text style={styles.title}>Hostel Manager Registration</Text>
         <TextInput
           label="Full Name"
@@ -87,20 +103,22 @@ export default function ManagerSignUp({ navigation }) {
         />
         <View style={styles.uploadContainer}>
           <Text style={styles.label}>Upload picture of business certificate</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={pickImage}>
             <Ionicons name="add-circle-outline" size={32} color="black" style={styles.uploadIcon} />
           </TouchableOpacity>
+          {businessCertificate && (
+            <Image source={{ uri: businessCertificate }} style={styles.previewImage} />
+          )}
         </View>
         <Button mode="contained" onPress={onSignUpPressed} style={styles.button}>
           Sign Up
         </Button>
         <View style={styles.row}>
           <Text>Already have an account? </Text>
-          <Button onPress={() => navigation.replace('SignInScreen')}>
+          <TouchableOpacity onPress={() => navigation.replace('SignInScreen')}>
             <Text style={styles.link}>Login</Text>
-          </Button>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
     </View>
   );
 }
@@ -110,12 +128,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#efe8e8',
   },
-  Image: {
-    width: 150,
-    height: 50,
+  image: {
+    width: '100%',
+    height: 150,
+    resizeMode: 'cover',
   },
   scrollContainer: {
-
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,
@@ -124,42 +143,32 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 10,
   },
-  inputContainer: {
-    marginBottom: 20,
-  },
   label: {
     fontSize: 16,
     marginBottom: 10,
   },
-  input: {
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    borderColor: 'black',
-  },
   uploadContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     marginBottom: 20,
+    alignItems: 'center',
   },
   uploadIcon: {
     marginTop: -10,
   },
-  button: {
-    backgroundColor: '#10b8e8',
-    borderRadius: 10,
-    padding: 15,
-    alignItems: 'center',
+  previewImage: {
+    width: 100,
+    height: 100,
     marginTop: 10,
+    borderRadius: 10,
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
+  button: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: 25,
+    padding: 10,
   },
   row: {
     flexDirection: 'row',
-    marginTop: 4,
+    justifyContent: 'center',
+    marginTop: 10,
   },
   link: {
     fontWeight: 'bold',
@@ -167,4 +176,3 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
   },
 });
-

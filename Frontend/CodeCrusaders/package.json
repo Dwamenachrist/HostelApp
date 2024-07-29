@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
+    "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "expo": "^51.0.11",
+    "expo-image-picker": "~15.0.7",
     "expo-status-bar": "~1.12.1",
     "nativewind": "^2.0.11",
     "prop-types": "^15.8.1",
@@ -25,8 +27,7 @@
     "react-native-status-bar-height": "^2.6.0",
     "react-redux": "^9.1.2",
     "red": "^0.0.1",
-    "redux": "^5.0.1",
-    "expo-image-picker": "~15.0.7"
+    "redux": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

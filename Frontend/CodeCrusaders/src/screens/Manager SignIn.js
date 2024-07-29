@@ -1,3 +1,5 @@
+// components/ManagerSignIn.js
+
 import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, View, Image, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
@@ -7,7 +9,7 @@ import { theme } from '../core/theme';
 import { AntDesign } from "@expo/vector-icons";
 import Header from '../components/Header';
 
-export default function StudentSignIn({ navigation }) {
+export default function ManagerSignIn({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
 
@@ -15,18 +17,28 @@ export default function StudentSignIn({ navigation }) {
     // Add your actual login logic here
     console.log("Login button pressed!");
     // After successful login, navigate to Home
-    navigation.navigate("TabNavigator", { screen: "Hostel" });
+    navigation.navigate("ManagerUpload");
   };
 
   return (
-    <>
+    <View style={styles.container}>
       {/* Image at the Top */}
-      <Image source={require("../../assets/book.png")} style={styles.image} />
+      <Image source={require('../../assets/manager 1.png')} style={styles.image} />
 
       <ScrollView>
-        <View style={styles.container}>
-          {/* Title */}
-          <Text style={styles.title}>Welcome Back</Text>
+        <View style={styles.innerContainer}>
+          {/* Header */}
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <AntDesign
+                style={styles.backIcon} // Style for the back icon
+                name="leftcircleo"
+                size={24}
+                color="black"
+              />
+            </TouchableOpacity>
+            <Header>Manager Sign In</Header>
+          </View>
 
           {/* Form */}
           <View style={styles.form}>
@@ -58,7 +70,7 @@ export default function StudentSignIn({ navigation }) {
             onPress={() => navigation.navigate("ResetPasswordScreen")}
             style={styles.forgotPassword}
           >
-            <Text style={{ color: "#7C7C7C" }}>Forgot your password?</Text>
+            <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
           </TouchableOpacity>
 
           {/* Login Button */}
@@ -73,48 +85,50 @@ export default function StudentSignIn({ navigation }) {
           {/* Sign Up Link */}
           <View style={styles.signupContainer}>
             <Text style={styles.signupText}>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.replace("StudentSignUp")}>
+            <TouchableOpacity onPress={() => navigation.replace("SignUp")}>
               <Text style={styles.signupLink}>Sign up</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-    </>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 20,
-    marginBottom: 20,
+    backgroundColor: '#f5f5f5', // Different background color for Manager page
   },
   image: {
     width: '100%',
-    height: 200,
+    height: 150, // Adjust the height as needed
     resizeMode: 'cover',
   },
-  title: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 24,
-    marginVertical: 10,
+  innerContainer: {
+    marginHorizontal: 20,
+    marginTop: 20,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 40,
+  },
+  backIcon: {
+    marginRight: 10,
   },
   form: {
     marginBottom: 20,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "gray",
-    marginBottom: 20,
-    padding: 1,
-    borderRadius: 10,
-  },
   forgotPassword: {
     alignSelf: "flex-end",
+    marginBottom: 20,
+  },
+  forgotPasswordText: {
+    color: "#ff6b6b", // Different color for Manager page
   },
   loginButton: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.accent, // Use a different accent color for manager login
     borderRadius: 25,
     padding: 10,
   },
@@ -127,7 +141,7 @@ const styles = StyleSheet.create({
     color: "#7C7C7C",
   },
   signupLink: {
-    color: theme.colors.primary,
+    color: theme.colors.accent, // Different color for Manager page
     fontWeight: "bold",
   },
 });
