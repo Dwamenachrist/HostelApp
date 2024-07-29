@@ -11,7 +11,7 @@ const hostels = [
   { id: 6, name: 'Hostel 6', image: require('../../assets/Rec3.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '100 meters away' },
 ];
 
-const Hostel = () => {
+const Hostel = ({ navigation }) => {
   const [likedHostels, setLikedHostels] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -42,7 +42,12 @@ const Hostel = () => {
         <ScrollView horizontal style={styles.scrollView} showsHorizontalScrollIndicator={false}>
           {filteredHostels.map(hostel => (
             <View key={hostel.id} style={styles.card}>
+            <TouchableOpacity
+              key={hostel.id}
+              onPress={() => navigation.navigate('Hdetails', { hostel })}
+            >
               <Image source={hostel.image} style={styles.image} />
+              </TouchableOpacity>
               <View style={styles.infoRow}>
                 <Text style={styles.discount}>{hostel.discount}</Text>
                 <Ionicons name="star" size={20} color="gold" style={styles.icon} />

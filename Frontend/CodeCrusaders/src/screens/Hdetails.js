@@ -3,16 +3,18 @@ import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'rea
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const Hdetails = () => {
+const Hdetails = ({ route }) => {
+  const { hostel } = route.params;
+
   return (
     <ScrollView style={styles.container}>
-      <Image source={require('../../assets/Rec3.png')} style={styles.hostelImage} />
+      <Image source={hostel.image} style={styles.hostelImage} />
       <View style={styles.contentContainer}>
-        <Text style={styles.hostelName}>MB3 Hostel</Text>
+        <Text style={styles.hostelName}>{hostel.name}</Text>
         <View style={styles.row}>
           <View style={styles.reviewContainer}>
             <Ionicons name="star" size={20} color="gold" />
-            <Text style={styles.reviewText}>4 (120 Reviews)</Text>
+            <Text style={styles.reviewText}>{hostel.rating} (120 Reviews)</Text>
           </View>
           <TouchableOpacity style={styles.facilitiesButton}>
             <Text style={styles.facilitiesText}>check facilities</Text>
@@ -25,7 +27,7 @@ const Hdetails = () => {
         </View>
         <Text style={styles.sectionTitle}>Description</Text>
         <Text style={styles.description}>
-          At MB3 Hostel, we're here to ensure that your first step into the university world is comfortable and unforgettable.
+          At {hostel.name}, we're here to ensure that your first step into the university world is comfortable and unforgettable.
           Our rooms are thoughtfully designed to offer you comfort and serenity. It's not just a room; it's your haven for
           focused studying and quality downtime. Feel free to check out our facilities.
         </Text>
