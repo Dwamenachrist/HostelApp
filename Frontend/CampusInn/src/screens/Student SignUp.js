@@ -1,5 +1,3 @@
-// components/StudentSignUp.js
-
 import React, { useState, useContext } from 'react';
 import { TouchableOpacity, StyleSheet, View, Image, ScrollView, Alert } from 'react-native';
 import { Text } from 'react-native-paper';
@@ -7,39 +5,54 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 import { AntDesign } from "@expo/vector-icons";
-import * as ImagePicker from 'expo-image-picker'; // Import image picker
-import { AuthContext } from '../components/AuthContext';// Import AuthContext
+import * as ImagePicker from 'expo-image-picker';
+import { AuthContext } from '../components/AuthContext';
+import emailValidator from '../helpers/emailValidator';
+import passwordValidator from '../helpers/passwordValidator';
+import  nameValidator  from '../helpers/nameValidator';
 
 export default function StudentSignUp({ navigation }) {
-  const { signUp, error } = useContext(AuthContext);
+  const { signUp } = useContext(AuthContext);
   const [fullName, setFullName] = useState({ value: '', error: '' });
   const [school, setSchool] = useState({ value: '', error: '' });
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [confirmPassword, setConfirmPassword] = useState({ value: '', error: '' });
   const [studentIdImage, setStudentIdImage] = useState(null);
+  const [error, setError] = useState('');
 
   const onSignUpPressed = async () => {
-    // Basic validation
+    setError('');  // Reset error state on submission
+
+    // Validation
+    const fullNameError = nameValidator(fullName.value);
+    const emailError = emailValidator(email.value);
+    const passwordError = passwordValidator(password.value);
+
     if (password.value !== confirmPassword.value) {
-      Alert.alert('Error', 'Passwords do not match');
+      setError('Passwords do not match');
       return;
     }
-    
-    if (!email.value || !password.value || !fullName.value) {
-      Alert.alert('Error', 'Please fill in all fields');
+
+    if (fullNameError || emailError || passwordError) {
+      setFullName({ ...fullName, error: fullNameError });
+      setEmail({ ...email, error: emailError });
+      setPassword({ ...password, error: passwordError });
+      return;
+    }
+
+    if (!studentIdImage) {
+      setError('Please upload a picture of your student ID');
       return;
     }
 
     try {
-      await signUp(email.value, password.value, fullName.value);
-      if (!error) {
-        navigation.navigate("TabNavigator", { screen: "Hostel" });
-      }
+      await signUp(email.value, password.value, fullName.value, school.value, studentIdImage);
+      navigation.navigate("TabNavigator", { screen: "Hostel" });
     } catch (err) {
-      Alert.alert('Error', err.message);
+      setError(err.message || 'Failed to sign up. Please try again.');
     }
-  }
+  };
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -52,18 +65,17 @@ export default function StudentSignUp({ navigation }) {
     const result = await ImagePicker.launchImageLibraryAsync();
 
     if (!result.canceled) {
-      setStudentIdImage(result.assets[0].uri); // Updated for latest Expo SDK format
+      setStudentIdImage(result.assets[0].uri);
     }
   };
 
   return (
     <>
       <Image source={require("../../assets/book.png")} style={styles.image} />
+      <ScrollView>
         <View style={styles.container}>
-          {/* Title */}
           <Text style={styles.title}>Student Registration</Text>
 
-          {/* Form */}
           <View style={styles.form}>
             <TextInput
               label="Full Name"
@@ -111,7 +123,6 @@ export default function StudentSignUp({ navigation }) {
               errorText={confirmPassword.error}
               secureTextEntry
             />
-            {/* Image Picker */}
             <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
               <AntDesign name="pluscircleo" size={24} color="black" />
               <Text>Upload picture of student ID</Text>
@@ -119,9 +130,8 @@ export default function StudentSignUp({ navigation }) {
           </View>
 
           {/* Display error if any */}
-          {error && <Text style={styles.error}>{error}</Text>}
+          {error ? <Text style={styles.error}>{error}</Text> : null}
 
-          {/* Sign Up Button */}
           <Button
             mode="contained"
             onPress={onSignUpPressed}
@@ -130,7 +140,6 @@ export default function StudentSignUp({ navigation }) {
             Continue
           </Button>
 
-          {/* Login Link */}
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Already have an account? </Text>
             <TouchableOpacity onPress={() => navigation.replace("StudentSignIn")}>
@@ -138,6 +147,7 @@ export default function StudentSignUp({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
+      </ScrollView>
     </>
   );
 }
@@ -145,7 +155,6 @@ export default function StudentSignUp({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 0,
     marginHorizontal: 20,
   },
   image: {
@@ -162,18 +171,10 @@ const styles = StyleSheet.create({
   form: {
     marginBottom: 20,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: "gray",
-    marginBottom: 20,
-    padding: 1,
-    borderRadius: 10,
-  },
   imagePicker: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-
   },
   signUpButton: {
     backgroundColor: theme.colors.primary,
@@ -183,7 +184,6 @@ const styles = StyleSheet.create({
   loginContainer: {
     flexDirection: "row",
     justifyContent: "center",
-
   },
   loginText: {
     color: "#7C7C7C",

@@ -1,18 +1,21 @@
 import React, { createContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';   
 
+
+// Create a context for authentication
 export const AuthContext = createContext({
   user: null,
-  login: () => {},
-  logout: () => {},
-  signUp: () => {},
-  resetPassword: () => {},
-  updateUser: () => {},
+  isLoading: true, 
+  login: () => Promise.resolve(),
+  logout: () => Promise.resolve(),
+  signUp: () => Promise.resolve(),
+  updateUser: () => Promise.resolve(),
   error: null,
 });
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Add isLoading state
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -24,6 +27,8 @@ export const AuthProvider = ({ children }) => {
         }
       } catch (err) {
         console.error('Failed to load user data', err);
+      } finally {
+        setIsLoading(false); // Set isLoading to false after data is loaded
       }
     };
 
@@ -31,23 +36,38 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
+    setIsLoading(true); // Start loading
     try {
-      if (email === 'test@example.com' && password === 'password123') {
-        const userData = { email, fullName: 'John Doe', school: 'University of Ghana', profileImage: null };
-        setUser(userData);
+      const response = await fetch('YOUR_BACKEND_LOGIN_API', { // Replace with your actual API endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const userData = await response.json();   
+
+        setUser(userData);   
+
         await AsyncStorage.setItem('user', JSON.stringify(userData));
-        setError(null);
       } else {
-        throw new Error('Invalid credentials');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
       }
     } catch (err) {
       setError(err.message);
+    } finally {
+      setIsLoading(false); // Stop loading
     }
   };
 
-  const logout = async () => {
+  const logout = () => {
+    setIsLoading(true);
+    AsyncStorage.removeItem('user');
     setUser(null);
-    await AsyncStorage.removeItem('user');
+    setIsLoading(false);
   };
 
   const signUp = async (email, password, fullName) => {
@@ -77,16 +97,32 @@ export const AuthProvider = ({ children }) => {
 
   const updateUser = async (updatedUser) => {
     try {
-      setUser(updatedUser);
-      await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
+      // Replace with your actual API call
+      const response = await fetch(`YOUR_BACKEND_UPDATE_URL/${user._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedUser),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update user');
+      }
+
+      const data = await response.json();
+      setUser(data.user);
+      await AsyncStorage.setItem('user', JSON.stringify(data.user));
       setError(null);
     } catch (err) {
-      setError('Failed to update user');
+      setError(err.message);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, signUp, resetPassword, updateUser, error }}>
+    <AuthContext.Provider
+      value={{ user, isLoading, login, logout, signUp, updateUser, error }}
+    >
       {children}
     </AuthContext.Provider>
   );
