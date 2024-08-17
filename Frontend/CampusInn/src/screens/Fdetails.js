@@ -10,7 +10,7 @@ const Fdetails = ({ navigation }) => {
         <AntDesign name="arrowleft" size={24} color="black" style={styles.backArrow} />
       </TouchableOpacity>
 
-      {/* Image Grid */}
+    
       <View style={styles.imageGrid}>
         <Image source={require('../assets/L.png')} style={styles.image} />
         <Image source={require('../assets/L.png')} style={styles.image} />
@@ -19,7 +19,7 @@ const Fdetails = ({ navigation }) => {
         <Image source={require('../assets/L.png')} style={styles.image} />
       </View>
 
-      {/* Title and Rating */}
+      
       <View style={styles.titleRow}>
         <Text style={styles.title}>LIBRARY</Text>
         <View style={styles.rating}>
@@ -28,7 +28,6 @@ const Fdetails = ({ navigation }) => {
         </View>
       </View>
 
-      {/* Description */}
       <Text style={styles.descriptionTitle}>Description</Text>
       <Text style={styles.descriptionText}>
         Need a quiet space to study, catch up on reading, or simply unwind? Our hostel library is your haven. Snuggle up in a comfy armchair with a good book, or spread out at a spacious desk to tackle that essay. We've got everything you need to make studying a breeze, including:
