@@ -7,8 +7,8 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 import { AntDesign } from "@expo/vector-icons";
-import * as ImagePicker from 'expo-image-picker'; // Import image picker
-import { AuthContext } from '../components/AuthContext';// Import AuthContext
+import * as ImagePicker from 'expo-image-picker'; 
+import { AuthContext } from '../components/AuthContext';
 
 export default function StudentSignUp({ navigation }) {
   const { signUp, error } = useContext(AuthContext);
@@ -113,8 +113,8 @@ export default function StudentSignUp({ navigation }) {
             />
             {/* Image Picker */}
             <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+              <Text>Upload picture of student ID/Ghana Card</Text>
               <AntDesign name="pluscircleo" size={24} color="black" />
-              <Text>Upload picture of student ID</Text>
             </TouchableOpacity>
           </View>
 
@@ -163,8 +163,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "gray",
+   
     marginBottom: 20,
     padding: 1,
     borderRadius: 10,
