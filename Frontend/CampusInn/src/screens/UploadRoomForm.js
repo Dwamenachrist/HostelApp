@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView 
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 
-const UploadHostelScreen = ({ navigation }) => {
+const UploadRoomScreen = ({ navigation }) => {
   const [hostelName, setHostelName] = useState('');
   const [hostelLocation, setHostelLocation] = useState('');
   const [hostelDescription, setHostelDescription] = useState('');
@@ -24,7 +24,7 @@ const UploadHostelScreen = ({ navigation }) => {
 
   const handleContinue = () => {
     if (hostelName && hostelLocation && hostelDescription && hostelImage) {
-      navigation.navigate('UploadHdetails', {
+      navigation.navigate('UploadRoom', {
         hostelName,
         hostelLocation,
         hostelDescription,
@@ -39,12 +39,12 @@ const UploadHostelScreen = ({ navigation }) => {
       <>
         <View style={styles.headerRow}>
           <Ionicons name="arrow-back" size={24} color="black" onPress={() => navigation.goBack()} />
-          <Text style={styles.headerText}>Upload Hostel</Text>
+          <Text style={styles.headerText}>Upload Room</Text>
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Hostel Name</Text>
+            <Text style={styles.label}>Types of room</Text>
             <TextInput
                 style={styles.input}
                 value={hostelName}
@@ -54,7 +54,7 @@ const UploadHostelScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Hostel Location</Text>
+            <Text style={styles.label}>Room number</Text>
             <TextInput
                 style={styles.input}
                 value={hostelLocation}
@@ -64,7 +64,7 @@ const UploadHostelScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Hostel Description</Text>
+            <Text style={styles.label}>Hostel details</Text>
             <TextInput
                 style={[styles.input, styles.textArea]}
                 value={hostelDescription}
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 20,
     backgroundColor: '#fff',
-    flexGrow: 1,
+    flexGrow: 1, // Ensures the ScrollView takes up available space
   },
   headerRow: {
     flexDirection: 'row',
@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UploadHostelScreen;
+export default UploadRoomScreen;

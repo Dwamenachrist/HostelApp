@@ -19,69 +19,47 @@ const HostelBookingInfo = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  const sampleData = {
-    name: "MB3 Hostel",
-    roomType: "1 in a room",
-    oldPrice: 20000,
-    newPrice: 10000,
-    photos: [
-      { image: sampleImage },
-      { image: sampleImage },
-      { image: sampleImage },
-      { image: sampleImage },
-      { image: sampleImage },
-    ],
-    rating: 4,
-    availableRooms: 10,
-    rooms: [
-      { name: "Single Room" },
-      { name: "Double Room" },
-    ],
-  };
-
+  // Destructure the passed route parameters
   const {
-    name = "Hotel Name",
-    roomType = "Room Type",
-    oldPrice = 0,
-    newPrice = 0,
-    photos = [],
+    room = "N/A",
+    price = 0,
+    image = sampleImage,
+    hostel = "Hotel Name",
     rating = 0,
     availableRooms = 0,
-    rooms = [],
-  } = sampleData;
-
-  const {
-    adults = 1,
-    children = 0,
-    selectedDates = { startDate: "N/A", endDate: "N/A" },
   } = route.params || {};
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
-  }, [name, navigation]);
+  }, [navigation]);
 
   const handleBooking = () => {
-    navigation.navigate("handleBooking", {
-      name,
+    const totalPrice = price * 1; // Adjust for the number of rooms/semesters if applicable
+
+    navigation.navigate("Summary", {
+      hostel,
+      roomType: room,
+      price: totalPrice,
+      checkIn: route.params?.selectedDates?.startDate || "N/A",
+      checkOut: route.params?.selectedDates?.endDate || "N/A",
       rating,
-      checkIn: selectedDates.startDate,
-      checkOut: selectedDates.endDate,
-      roomType: rooms[0]?.name || "N/A",
+      availableRooms,
+      image // Ensure the image is passed as well
     });
   };
 
   return (
-    <>
-      <SafeAreaView style={styles.container}>
-      </SafeAreaView>
+      <>
+        <SafeAreaView style={styles.container}></SafeAreaView>
         <ScrollView>
           <View style={styles.imageGallery}>
-            {photos.slice(0, 5).map((photo, index) => (
-              <View key={index} style={styles.imageWrapper}>
-                <Image style={styles.image} source={photo.image} />
-              </View>
+            {/* Display the first four images */}
+            {Array.from({ length: 4 }).map((_, index) => (
+                <View key={index} style={styles.imageWrapper}>
+                  <Image style={styles.image} source={image} />
+                </View>
             ))}
             <Pressable style={styles.showMoreButton}>
               <Text style={styles.showMoreText}>Show more</Text>
@@ -89,25 +67,21 @@ const HostelBookingInfo = () => {
           </View>
 
           <View style={styles.hotelInfo}>
-            <Text style={styles.hotelName}>{name}</Text>
+            <Text style={styles.hotelName}>{hostel}</Text>
             <View style={styles.ratingWrapper}>
               <MaterialIcons name="star" size={24} color="gold" />
               <Text>{rating}</Text>
             </View>
           </View>
-          <Text style={styles.roomType}>room type: {roomType}</Text>
+          <Text style={styles.roomType}>Room type: {room}</Text>
 
           <View style={styles.separator} />
           <View style={styles.priceAndRooms}>
             <View style={styles.priceInfo}>
               <Text style={styles.priceLabel}>Price for One Semester</Text>
-              <Text style={styles.price}>GHc {newPrice.toFixed(2)}</Text>
+              <Text style={styles.price}>GHc {price.toFixed(2)}</Text>
             </View>
             <View style={styles.verticalLine} />
-            <View style={styles.lineSection}>
-          <View style={styles.line} ></View>
-          <View style={styles.line} ></View> 
-          </View>
             <View style={styles.availableRooms}>
               <Text style={styles.availableRoomsLabel}>Available Rooms</Text>
               <Text style={styles.availableRoomsCount}>{availableRooms}</Text>
@@ -118,17 +92,24 @@ const HostelBookingInfo = () => {
           <View style={styles.stayDetails}>
             <View>
               <Text style={styles.detailLabel}>Check In</Text>
-              <Text style={styles.detailValue}>{selectedDates.startDate}</Text>
+              <Text style={styles.detailValue}>
+                {route.params?.selectedDates?.startDate || "N/A"}
+              </Text>
             </View>
             <View>
               <Text style={styles.detailLabel}>Check Out</Text>
-              <Text style={styles.detailValue}>{selectedDates.endDate}</Text>
+              <Text style={styles.detailValue}>
+                {route.params?.selectedDates?.endDate || "N/A"}
+              </Text>
             </View>
           </View>
           <View style={styles.stayDetails}>
             <Text style={styles.detailLabel}>Room and guests</Text>
             <Text style={styles.detailValue}>
-              1 room, {adults} student{children > 0 ? `, ${children} children` : ''}
+              1 room, {route.params?.adults || 1} student
+              {route.params?.children > 0
+                  ? `, ${route.params.children} children`
+                  : ""}
             </Text>
           </View>
 
@@ -136,20 +117,20 @@ const HostelBookingInfo = () => {
           <Text style={styles.facilitiesTitle}>Most Popular Facilities</Text>
           <View style={styles.facilities}>
             <Text style={styles.facility}>Study room</Text>
-            <Text style={styles.facility}>canteen</Text>
-            <Text style={styles.facility}>library</Text>
-            <Text style={styles.facility}>shuttles</Text>
+            <Text style={styles.facility}>Canteen</Text>
+            <Text style={styles.facility}>Library</Text>
+            <Text style={styles.facility}>Shuttles</Text>
           </View>
         </ScrollView>
 
-      <Button
-        mode="contained"
-        onPress={(handleBooking) => navigation.navigate('SummaryScreen')}
-        style={styles.footerButton}
-      >
-        Book
-      </Button>
-    </>
+        <Button
+            mode="contained"
+            onPress={handleBooking}
+            style={styles.footerButton}
+        >
+          Book
+        </Button>
+      </>
   );
 };
 
@@ -160,16 +141,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     marginTop: 30,
-  },
-  header: {
-    height: 110,
-    borderBottomColor: "transparent",
-    shadowColor: "transparent",
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "black",
   },
   imageGallery: {
     flexDirection: "row",
@@ -207,15 +178,15 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
   },
+  ratingWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   roomType: {
     fontSize: 18,
     color: "#666",
     marginHorizontal: 12,
     marginTop: 5,
-  },
-  ratingWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
   },
   separator: {
     borderBottomColor: "#E0E0E0",
@@ -226,12 +197,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 12,
-  },
-  verticalLine: {
-    width: 2, 
-    height: '100%', 
-    backgroundColor: '#dfdada', 
-    marginRight: 10, 
   },
   priceInfo: {
     flex: 1,
@@ -244,6 +209,12 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  verticalLine: {
+    width: 2,
+    height: "100%",
+    backgroundColor: "#dfdada",
+    marginRight: 10,
   },
   availableRooms: {
     flex: 1,

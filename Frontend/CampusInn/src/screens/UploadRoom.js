@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import Button from '../components/Button';
 
-const UploadHdetails = ({navigation}) => {
+const UploadRoom = ({navigation}) => {
   return (
     <ScrollView style={styles.container}>
       <Image source={require('../../assets/Rec3.png')} style={styles.hostelImage} />
@@ -42,13 +42,35 @@ const UploadHdetails = ({navigation}) => {
         </View>
       </View>
 
+      <View style={styles.cardContainer}>
+        <TouchableOpacity style={styles.card}>
+          <Image source={require('../../assets/room1.png')} style={styles.cardImage} />
+          <Text style={styles.cardText}>1 in a room</Text>
+          <Text style={styles.cardPrice}>Price: 10,000 cedis</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.card}>
+          <Image source={require('../../assets/room2.png')} style={styles.cardImage} />
+          <Text style={styles.cardText}>2 in a room</Text>
+          <Text style={styles.cardPrice}>Price: 10,000 cedis</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.card}>
+          <Image source={require('../../assets/room3.png')} style={styles.cardImage} />
+          <Text style={styles.cardText}>3 in a room</Text>
+          <Text style={styles.cardPrice}>Price: 10,000 cedis</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.card}>
+          <Image source={require('../../assets/room4.png')} style={styles.cardImage} />
+          <Text style={styles.cardText}>4 in a room</Text>
+          <Text style={styles.cardPrice}>Price: 10,000 cedis</Text>
+        </TouchableOpacity>
+      </View>
 
 	<TouchableOpacity style={{alignItems: 'center'}}>
 	  <Button 
 	  style={styles.Upload} 
-	  onPress={() => navigation.navigate('UploadRoomScreen')}
+	  onPress={() => navigation.navigate('BackCongratualtion')}
 	 >
-		Add Room
+		Upload
 	  </Button>
 	</TouchableOpacity>
     </ScrollView>
@@ -183,4 +205,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UploadHdetails;
+export default UploadRoom;
