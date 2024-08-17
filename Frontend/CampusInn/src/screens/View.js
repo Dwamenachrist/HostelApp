@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 const ViewScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.location}>Ayele, Accra</Text>
+      <Text style={styles.location}>Hostel Location</Text>
       <View style={styles.infoContainer}>
         <Text style={styles.infoText}>Total number of rooms</Text>
         <Text style={styles.infoNumber}>14</Text>

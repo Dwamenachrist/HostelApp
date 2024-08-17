@@ -5,10 +5,10 @@ import { Ionicons } from '@expo/vector-icons';
 const hostels = [
   { id: 1, name: 'MB3 Hostel', image: require('../../assets/Rec2.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '100 meters away' },
   { id: 2, name: 'Makassela Hostel', image: require('../../assets/Rec3.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '100 meters away' },
-  { id: 3, name: 'Hostel 3', image: require('../../assets/Rec2.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '100 meters away' },
-  { id: 4, name: 'Hostel 4', image: require('../../assets/Rec3.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '100 meters away' },
-  { id: 5, name: 'Hostel 5', image: require('../../assets/Rec2.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '100 meters away' },
-  { id: 6, name: 'Hostel 6', image: require('../../assets/Rec3.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '100 meters away' },
+  { id: 3, name: 'Hostel 3', image: require('../../assets/Rec2.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '200 meters away' },
+  { id: 4, name: 'Hostel 4', image: require('../../assets/Rec3.png'), discount: '15% OFF', rating: 4.7, price: '$320 - $550 USD /night', distance: '300 meters away' },
+  { id: 5, name: 'Hostel 5', image: require('../../assets/Rec2.png'), discount: '20% OFF', rating: 4.8, price: '$350 - $600 USD /night', distance: '400 meters away' },
+  { id: 6, name: 'Hostel 6', image: require('../../assets/Rec3.png'), discount: '5% OFF', rating: 4.2, price: '$250 - $450 USD /night', distance: '500 meters away' },
 ];
 
 const Hostel = ({ navigation }) => {
@@ -19,52 +19,47 @@ const Hostel = ({ navigation }) => {
     setLikedHostels((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const filteredHostels = hostels.filter((hostel) => 
-    hostel.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredHostels = hostels.filter((hostel) =>
+      hostel.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Find hostels</Text>
-        <Text style={styles.headerText}>and rooms</Text>
-      </View>
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search hostel and rooms"
-          value={searchQuery}
-          onChangeText={(text) => setSearchQuery(text)}
-        />
-        <Ionicons name="search" size={24} color="black" />
-      </View>
-      <ScrollView style={styles.verticalScrollView}>
-        <ScrollView horizontal style={styles.scrollView} showsHorizontalScrollIndicator={false}>
-          {filteredHostels.map(hostel => (
-            <View key={hostel.id} style={styles.card}>
-            <TouchableOpacity
-              key={hostel.id}
-              onPress={() => navigation.navigate('Hdetails', { hostel })}
-            >
-              <Image source={hostel.image} style={styles.image} />
-              </TouchableOpacity>
-              <View style={styles.infoRow}>
-                <Text style={styles.discount}>{hostel.discount}</Text>
-                <Ionicons name="star" size={20} color="gold" style={styles.icon} />
-                <Text style={styles.rating}>{hostel.rating}</Text>
-                <TouchableOpacity onPress={() => toggleLike(hostel.id)}>
-                  <Ionicons name={likedHostels[hostel.id] ? "heart" : "heart-outline"} size={20} color={likedHostels[hostel.id] ? "red" : "#69b2f6"} style={styles.icon} />
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>Find hostels</Text>
+          <Text style={styles.headerText}>and rooms</Text>
+        </View>
+        <View style={styles.searchContainer}>
+          <TextInput
+              style={styles.searchInput}
+              placeholder="Search hostel and rooms"
+              value={searchQuery}
+              onChangeText={(text) => setSearchQuery(text)}
+          />
+          <Ionicons name="search" size={24} color="black" />
+        </View>
+        <ScrollView style={styles.verticalScrollView} contentContainerStyle={styles.contentContainer}>
+          <View style={styles.grid}>
+            {filteredHostels.map(hostel => (
+                <TouchableOpacity key={hostel.id} onPress={() => navigation.navigate('Hdetails', { hostel })} style={styles.card}>
+                  <Image source={hostel.image} style={styles.image} />
+                  <View style={styles.infoRow}>
+                    <Text style={styles.discount}>{hostel.discount}</Text>
+                    <Ionicons name="star" size={20} color="gold" style={styles.icon} />
+                    <Text style={styles.rating}>{hostel.rating}</Text>
+                    <TouchableOpacity onPress={() => toggleLike(hostel.id)} style={{marginLeft: -10}}>
+                      <Ionicons name={likedHostels[hostel.id] ? "heart" : "heart-outline"} size={20} color={likedHostels[hostel.id] ? "red" : "#69b2f6"} style={styles.icon} />
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={styles.hostelName}>{hostel.name}</Text>
+                  <Text style={styles.price}>{hostel.price}</Text>
+                  <Text style={styles.distance}>{hostel.distance}</Text>
                 </TouchableOpacity>
-              </View>
-              <Text style={styles.hostelName}>{hostel.name}</Text>
-              <Text style={styles.price}>{hostel.price}</Text>
-              <Text style={styles.distance}>{hostel.distance}</Text>
-            </View>
-          ))}
+            ))}
+          </View>
         </ScrollView>
-        <Text style={styles.facilities}>Facilities</Text>
-      </ScrollView>
-    </View>
+        <View style={styles.divider} />
+      </View>
   );
 };
 
@@ -106,16 +101,24 @@ const styles = StyleSheet.create({
   verticalScrollView: {
     flex: 1,
   },
-  scrollView: {
+  contentContainer: {
     paddingVertical: 20,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+  },
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
   card: {
-    width: 200,
+    width: '48%',
     height: 250,
     borderRadius: 10,
-    marginHorizontal: 10,
+    marginBottom: 20,
     padding: 10,
     backgroundColor: '#f1f5fb',
+    elevation: 3,
   },
   image: {
     width: '100%',
@@ -154,10 +157,12 @@ const styles = StyleSheet.create({
   distance: {
     color: 'gray',
   },
-  facilities: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginLeft: 20,
+  divider: {
+    backgroundColor: '#f0f5fa',
+    height: 5,
+    width: '100%',
+    paddingVertical: 5,
+
   },
 });
 

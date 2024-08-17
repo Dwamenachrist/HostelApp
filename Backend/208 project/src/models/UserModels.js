@@ -27,7 +27,7 @@ var userSchema = new mongoose.Schema({
     row: {
         type: 'string',
         default: 'student',
-    },
+    },a
 
 })
 
