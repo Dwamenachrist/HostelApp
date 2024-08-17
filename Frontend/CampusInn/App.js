@@ -35,8 +35,10 @@ import UploadHdetails from "./src/screens/UploadHdetails";
 import BackCongratulation from "./src/screens/BackToHome";
 import ResetPassword from "./src/screens/ResetPasswordScreen";
 import { AuthProvider } from "./src/components/AuthContext";
-import UploadRoomScreen from "./src/screens/UploadRoomForm";
-import UploadRoom from "./src/screens/UploadRoom";
+import RoomCapacity from "./src/screens/RoomCapacity";
+import Rooms from "./src/screens/Rooms";
+import Facilities from "./src/screens/Facilities";
+import Fdetails from "./src/screens/Fdetails";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -89,6 +91,26 @@ function App() {
         <Stack.Screen 
             name="Splash"
             component={Splash} 
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="RoomCapacity"
+            component={RoomCapacity} 
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="Rooms"
+            component={Rooms} 
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="Facilities"
+            component={Facilities} 
+            options={{ headerShown: false }}
+          />
+           <Stack.Screen 
+            name="Fdetails"
+            component={Fdetails} 
             options={{ headerShown: false }}
           />
           <Stack.Screen 

@@ -11,6 +11,7 @@ import emailValidator from '../helpers/emailValidator';
 import passwordValidator from '../helpers/passwordValidator';
 import  nameValidator  from '../helpers/nameValidator';
 
+
 export default function StudentSignUp({ navigation }) {
   const { signUp } = useContext(AuthContext);
   const [fullName, setFullName] = useState({ value: '', error: '' });
@@ -124,8 +125,8 @@ export default function StudentSignUp({ navigation }) {
               secureTextEntry
             />
             <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+              <Text>Upload picture of student ID/Ghana Card</Text>
               <AntDesign name="pluscircleo" size={24} color="black" />
-              <Text>Upload picture of student ID</Text>
             </TouchableOpacity>
           </View>
 
@@ -170,6 +171,14 @@ const styles = StyleSheet.create({
   },
   form: {
     marginBottom: 20,
+  },
+  input: {
+    borderWidth: 2,
+    borderColor: "gray",
+   
+    marginBottom: 20,
+    padding: 1,
+    borderRadius: 10,
   },
   imagePicker: {
     flexDirection: 'row',
