@@ -90,7 +90,7 @@ function App() {
     <AuthProvider>
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Facilities">
+        <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen 
             name="Splash"
             component={Splash} 
