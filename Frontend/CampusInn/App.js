@@ -40,6 +40,7 @@ import { AuthProvider } from "./src/components/AuthContext";
 import RoomCapacity from "./src/screens/RoomCapacity";
 import Rooms from "./src/screens/Rooms";
 import Facilities from "./src/screens/Facilities";
+import Fdetails from "./src/screens/Fdetails";
 
 
 const Stack = createNativeStackNavigator();
@@ -108,6 +109,11 @@ function App() {
           <Stack.Screen 
             name="Facilities"
             component={Facilities} 
+            options={{ headerShown: false }}
+          />
+           <Stack.Screen 
+            name="Fdetails"
+            component={Fdetails} 
             options={{ headerShown: false }}
           />
           <Stack.Screen 

@@ -13,25 +13,23 @@ export default function Facilities({ navigation }) {
         <Text style={styles.headerText}>FACILITIES</Text>
       </View>
 
-    
-      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '1 in a room' })}>
+      {/* Library Image - Navigate to Fdetails Screen */}
+      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Fdetails')}>
         <Image source={require('../assets/Library.png')} style={styles.image} />
         <Text style={styles.roomText}>LIBRARY</Text>
       </TouchableOpacity>
 
- 
+      {/* Other Facilities */}
       <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '2 in a room' })}>
         <Image source={require('../assets/Studyroom.png')} style={styles.image} />
         <Text style={styles.roomText}>STUDY ROOM</Text>
       </TouchableOpacity>
 
-     
       <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '3 in a room' })}>
         <Image source={require('../assets/Canteen.png')} style={styles.image} />
         <Text style={styles.roomText}>CANTEEN</Text>
       </TouchableOpacity>
 
-     
       <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '4 in a room' })}>
         <Image source={require('../assets/Shuttle.png')} style={styles.image} />
         <Text style={styles.roomText}>SHUTTLE</Text>
@@ -52,7 +50,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     marginTop: 45,
-    
     backgroundColor: '#f8f8f8',
   },
   headerText: {
