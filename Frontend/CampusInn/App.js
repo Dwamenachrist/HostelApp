@@ -23,7 +23,7 @@ import HostelBookingInfo from "./src/screens/Booking Info";
 import Manage from "./src/screens/ManageScreen";
 import HostelInfo from "./src/screens/HostelInfoScreen";
 import AddRoom from "./src/screens/AddRoomScreen";
-import Congratualtion from "./src/screens/CongratulationScreen";
+import Congratulation from "./src/screens/CongratulationScreen";
 import Congrat from "./src/screens/Congratulation";
 import Splash from "./src/screens/splash";
 import Hostel from "./src/screens/Hostel";
@@ -39,6 +39,8 @@ import RoomCapacity from "./src/screens/RoomCapacity";
 import Rooms from "./src/screens/Rooms";
 import Facilities from "./src/screens/Facilities";
 import Fdetails from "./src/screens/Fdetails";
+import UploadRoom from "./src/screens/UploadRoom";
+import UploadRoomScreen from "./src/screens/UploadRoomForm";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -174,13 +176,13 @@ function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-              name="UploadRoomScreen"
-              component={UploadRoomScreen}
+              name="UploadRoom"
+              component={UploadRoom}
               options={{ headerShown: false }}
           />
           <Stack.Screen
-              name="UploadRoom"
-              component={UploadRoom}
+              name="UploadRoomScreen"
+              component={UploadRoomScreen}
               options={{ headerShown: false }}
           />
           <Stack.Screen
@@ -226,7 +228,7 @@ function App() {
           />
           <Stack.Screen
             options={{ headerShown: false }}
-            name="BackCongratualtion"
+            name="BackCongratulation"
             component={BackCongratulation}
           />
           <Stack.Screen

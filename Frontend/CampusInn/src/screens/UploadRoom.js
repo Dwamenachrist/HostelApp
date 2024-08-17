@@ -68,7 +68,7 @@ const UploadRoom = ({navigation}) => {
 	<TouchableOpacity style={{alignItems: 'center'}}>
 	  <Button 
 	  style={styles.Upload} 
-	  onPress={() => navigation.navigate('BackCongratualtion')}
+	  onPress={() => navigation.navigate('BackCongratulation')}
 	 >
 		Upload
 	  </Button>
