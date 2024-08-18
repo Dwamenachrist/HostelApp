@@ -23,7 +23,7 @@ import HostelBookingInfo from "./src/screens/Booking Info";
 import Manage from "./src/screens/ManageScreen";
 import HostelInfo from "./src/screens/HostelInfoScreen";
 import AddRoom from "./src/screens/AddRoomScreen";
-import Congratualtion from "./src/screens/CongratulationScreen";
+import Congratulation from "./src/screens/CongratulationScreen";
 import Congrat from "./src/screens/Congratulation";
 import Splash from "./src/screens/splash";
 import Hostel from "./src/screens/Hostel";
@@ -39,10 +39,15 @@ import RoomCapacity from "./src/screens/RoomCapacity";
 import Rooms from "./src/screens/Rooms";
 import Facilities from "./src/screens/Facilities";
 import Fdetails from "./src/screens/Fdetails";
+
 import UploadRoomScreen from "./src/screens/UploadRoomForm";
 import UploadRoom from "./src/screens/UploadRoom";
 import Reviews from "./src/screens/Reviews";
 import Occupants from "./src/screens/Occupants";
+
+
+import ManagerWelcomeScreen from "./src/screens/Manager WelcomeScreen";
+import ManagerSignIn from "./src/screens/Manager SignIn";
 
 
 const Stack = createNativeStackNavigator();
@@ -92,7 +97,7 @@ function App() {
     <AuthProvider>
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Occupants">
+        <Stack.Navigator initialRouteName="Splash">
         <Stack.Screen 
             name="Splash"
             component={Splash} 
@@ -128,6 +133,11 @@ function App() {
             component={Home} 
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+              options={{ headerShown: false }}
+              name="ManagerWelcomeScreen"
+              component={ManagerWelcomeScreen}
+          />
           <Stack.Screen 
             name="TabNavigator" 
             component={TabNavigator}
@@ -152,6 +162,11 @@ function App() {
             options={{ headerShown: false }}
             name="StudentSignIn"
             component={StudentSignIn}
+          />
+          <Stack.Screen
+              options={{ headerShown: false }}
+              name="ManagerSignIn"
+              component={ManagerSignIn}
           />
           <Stack.Screen
             options={{ headerShown: false }}
@@ -189,19 +204,19 @@ function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen
-              name="UploadRoomScreen"
-              component={UploadRoomScreen}
-              options={{ headerShown: false }}
-          />
-          <Stack.Screen
               name="UploadRoom"
               component={UploadRoom}
               options={{ headerShown: false }}
           />
           <Stack.Screen
+              name="UploadRoomScreen"
+              component={UploadRoomScreen}
+              options={{ headerShown: false }}
+          />
+          <Stack.Screen
           name="Manage"
           component={Manage}
-          options={{ 
+          options={{
             headerShown: false,
             headerTitle: 'My Hostels',
             headerTitleAlign: 'center',
@@ -241,7 +256,7 @@ function App() {
           />
           <Stack.Screen
             options={{ headerShown: false }}
-            name="BackCongratualtion"
+            name="BackCongratulation"
             component={BackCongratulation}
           />
           <Stack.Screen

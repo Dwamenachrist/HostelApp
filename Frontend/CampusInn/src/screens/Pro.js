@@ -54,6 +54,28 @@ const ProfileScreen = () => {
     return <Text>Loading...</Text>;
   }
 
+  const handleLogout = () => {
+    Alert.alert(
+        "Logout",
+        "Are you sure you want to logout?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Logout",
+            onPress: () => {
+              logout();
+
+              navigation.navigate("Home"); // Navigate to Home after logout
+            },
+          },
+        ]
+    );
+  };
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
@@ -130,7 +152,7 @@ const ProfileScreen = () => {
       </TouchableOpacity>
 
       {/* Logout Button */}
-      <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
     </View>

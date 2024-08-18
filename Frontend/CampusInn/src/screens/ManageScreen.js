@@ -1,8 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    TouchableOpacity,
+    Alert,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import
+{ useNavigation } from "@react-navigation/native";
 
-const Manage = ({ navigation }) => {
+const Manage = () => {
+    const navigation = useNavigation();
+
     const [hostels, setHostels] = useState([
         {
             id: 1,
@@ -59,7 +70,7 @@ const Manage = ({ navigation }) => {
                             <Text style={styles.buttonText}>Delete</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('View')}
+                            onPress={() => navigation.navigate("View", { hostel })}
                             style={styles.button}
                         >
                             <Text style={styles.buttonText}>View</Text>

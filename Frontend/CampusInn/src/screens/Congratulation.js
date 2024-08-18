@@ -8,6 +8,9 @@ const Congrat = ({ navigation }) => {
       <Image source={require('../../assets/flight.png')} style={styles.image} />
       <Text style={styles.title}>Congratulations!!</Text>
       <Text style={styles.subtitle}>Your hostel stay is secured.</Text>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Hostel')}>
+        <Text style={styles.buttonText}>BACK TO HOME</Text>
+      </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
   );
