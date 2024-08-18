@@ -181,8 +181,6 @@ const styles = StyleSheet.create({
     padding: 1,
     borderRadius: 10,
   },
-
-
   imagePicker: {
     flexDirection: 'row',
     alignItems: 'center',
