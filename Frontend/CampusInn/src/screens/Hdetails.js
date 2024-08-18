@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
+import Button from '../components/Button';
 
 const Hdetails = ({ route }) => {
   const { hostel } = route.params;
@@ -27,7 +29,8 @@ const Hdetails = ({ route }) => {
 
 
   return (
-      <ScrollView style={styles.container}>
+      <>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Image source={hostel.image} style={styles.hostelImage} />
         <View style={styles.contentContainer}>
           <Text style={styles.hostelName}>{hostel.name}</Text>
@@ -36,7 +39,9 @@ const Hdetails = ({ route }) => {
               <Ionicons name="star" size={20} color="gold" />
               <Text style={styles.reviewText}>{hostel.rating} (120 Reviews)</Text>
             </View>
-            <TouchableOpacity style={styles.facilitiesButton}>
+            <TouchableOpacity
+                style={styles.facilitiesButton}
+                onPress={() => navigation.navigate('Facilities')}>
               <Text style={styles.facilitiesText}>Check Facilities</Text>
               <MaterialIcons name="telegram" size={24} color="#69b2f6" />
             </TouchableOpacity>
@@ -62,16 +67,15 @@ const Hdetails = ({ route }) => {
             <Ionicons name="mail" size={20} color="white" style={styles.Ion} />
           </View>
         </View>
-        <View style={styles.cardContainer}>
-          {roomTypes.map((room, index) => (
-              <TouchableOpacity key={index} style={styles.card} onPress={() => handleRoomPress(room)}>
-                <Image source={room.image} style={styles.cardImage} />
-                <Text style={styles.cardText}>{room.name}</Text>
-                <Text style={styles.cardPrice}>Price: {room.price} cedis</Text>
-              </TouchableOpacity>
-          ))}
-        </View>
       </ScrollView>
+
+          <Button style={{ marginVertical: 0}} mode="contained" onPress={() => navigation.navigate('RoomCapacity')}>
+            <View style={styles.buttonContent}>
+              <Text style={styles.buttonText}>Book</Text>
+              <FontAwesome6 name="location-arrow" size={24} color="white" />
+            </View>
+          </Button>
+      </>
   );
 };
 
@@ -79,6 +83,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center', // Centers the content horizontally
+  },
+  buttonText: {
+    marginRight: 10, // Add space between the text and the icon
+    fontWeight: 'bold',
+    fontSize: 20,
+    lineHeight: 26,
+    color: 'white',
   },
   hostelImage: {
     width: '100%',
@@ -171,8 +187,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginTop: 30,
-    
-   
+
+
   },
   card: {
     width: '48%',

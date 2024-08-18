@@ -41,6 +41,8 @@ import Facilities from "./src/screens/Facilities";
 import Fdetails from "./src/screens/Fdetails";
 import UploadRoom from "./src/screens/UploadRoom";
 import UploadRoomScreen from "./src/screens/UploadRoomForm";
+import ManagerWelcomeScreen from "./src/screens/Manager WelcomeScreen";
+import ManagerSignIn from "./src/screens/Manager SignIn";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -125,6 +127,11 @@ function App() {
             component={Home} 
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+              options={{ headerShown: false }}
+              name="ManagerWelcomeScreen"
+              component={ManagerWelcomeScreen}
+          />
           <Stack.Screen 
             name="TabNavigator" 
             component={TabNavigator}
@@ -139,6 +146,11 @@ function App() {
             options={{ headerShown: false }}
             name="StudentSignIn"
             component={StudentSignIn}
+          />
+          <Stack.Screen
+              options={{ headerShown: false }}
+              name="ManagerSignIn"
+              component={ManagerSignIn}
           />
           <Stack.Screen
             options={{ headerShown: false }}
@@ -188,7 +200,7 @@ function App() {
           <Stack.Screen
           name="Manage"
           component={Manage}
-          options={{ 
+          options={{
             headerShown: false,
             headerTitle: 'My Hostels',
             headerTitleAlign: 'center',

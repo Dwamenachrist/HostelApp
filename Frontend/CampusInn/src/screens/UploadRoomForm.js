@@ -76,7 +76,7 @@ const UploadRoomScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.uploadContainer}>
-            <Text style={styles.label}>Upload Picture of Hostel</Text>
+            <Text style={styles.label}>Upload Picture of Room</Text>
             <TouchableOpacity onPress={pickImage}>
               <Ionicons name="add-circle-outline" size={32} color="black" />
             </TouchableOpacity>

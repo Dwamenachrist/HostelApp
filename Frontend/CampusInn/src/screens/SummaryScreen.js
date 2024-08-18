@@ -1,63 +1,66 @@
 import React from "react";
-import { 
-    View, Text, StyleSheet, Image, 
-} from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Button from "../components/Button";  // Assuming you have a custom Button component
 
-const Summary = ({navigation}) => {
+import { useRoute } from "@react-navigation/native";
+import
+    Button from "../components/Button";
+
+const Summary = ({ navigation }) => {
+    const route = useRoute();
+
+    const {
+        hostel = "N/A",
+        roomType = "N/A",
+        price = 0,
+        checkIn = "N/A",
+        checkOut = "N/A",
+        image = null,
+    } = route.params || {};
+
     return (
         <SafeAreaView style={styles.container}>
-                  <View style={styles.hostel}>
-                <Image 
-                    source={require("../assets/makassela.png")} 
-                    style={styles.hostelImage}
-                />
+            <View style={styles.hostel}>
+                {image ? (
+                    <Image source={image} style={styles.hostelImage} />
+                ) : (
+                    <View style={styles.noImagePlaceholder}>
+                        <Text>No Image Available</Text>
+                    </View>
+                )}
                 <View style={styles.hostelDetails}>
-                    <Text style={styles.hostelName}>MB3 Hostel</Text>
-                    <Text>1 in a room</Text>
-                    <Text>GHc 10,000 /semester</Text>
+                    <Text style={styles.hostelName}>{hostel}</Text>
+                    <Text>{roomType}</Text>
+                    <Text>GHc {price.toFixed(2)} /semester</Text>
                 </View>
             </View>
 
             <View style={styles.bookingInfo}>
                 <View style={styles.infoRow}>
-                    <Text>Booking Date:</Text>
-                    <Text>1-Oct-2023</Text>
-                </View>
-                <View style={styles.infoRow}>
                     <Text>Check-in:</Text>
-                    <Text>24-Oct-2023</Text>
+                    <Text>{checkIn}</Text>
                 </View>
                 <View style={styles.infoRow}>
                     <Text>Check-out:</Text>
-                    <Text>26-Oct-2023</Text>
-                </View>
-                <View style={styles.infoRow}>
-                    <Text>Room number:</Text>
-                    <Text>2</Text>
-                </View>
-                <View style={styles.infoRow}>
-                    <Text>Room(s):</Text>
-                    <Text>1</Text>
+                    <Text>{checkOut}</Text>
                 </View>
             </View>
 
             <View style={styles.line} />
 
-            <View style={styles.Amountcontainer}>
-            <View style={styles.infoRow}>
-                <Text>Amount</Text>
-                <Text>$350 x 2</Text>
-              </View>
-              <View style={styles.infoRow}>
-                <Text>Total</Text>
-                <Text>$730</Text>
-            </View>
+            <View style={styles.amountContainer}>
+                <View style={styles.infoRow}>
+                    <Text>Amount</Text>
+                    <Text>GHc {price.toFixed(2)}</Text>
+                </View>
+                <View style={styles.infoRow}>
+                    <Text>Total</Text>
+                    <Text>GHc {price.toFixed(2)}</Text>
+                </View>
             </View>
 
             <Button onPress={() => navigation.navigate('Payment')}>
-            CONTINUE PAYMENT
+                <Text>CONTINUE PAYMENT</Text> {/* Wrap button text in <Text> */}
             </Button>
         </SafeAreaView>
     );
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
     infoRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 5, 
+        marginVertical: 5,
     },
     line: {
         borderBottomColor: "#333333",
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 20,
     },
-    Amountcontainer: {
+    amountContainer: {  // Corrected name
         flexDirection: 'column',
         justifyContent: "space-between",
         marginTop: 20,

@@ -12,17 +12,18 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Button from "../components/Button";
 
-// Import local images
 const sampleImage = require("../assets/makassela.png");
 
 const HostelBookingInfo = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  // Destructure the passed route parameters
   const {
     room = "N/A",
-    price = 0,
+    roomId = "N/A",
+    ac = "N/A",
+    status = "N/A",
+    price = 0, // Default to 0 if price is undefined
     image = sampleImage,
     hostel = "Hotel Name",
     rating = 0,
@@ -36,29 +37,37 @@ const HostelBookingInfo = () => {
   }, [navigation]);
 
   const handleBooking = () => {
-    const totalPrice = price * 1; // Adjust for the number of rooms/semesters if applicable
+    if (status !== 'Available') {
+      alert("This room is not currently available for booking.");
+      return;
+    }
+
+    const totalPrice = price * 1;
 
     navigation.navigate("Summary", {
       hostel,
-      roomType: room,
+      room,
+      roomId,
       price: totalPrice,
       checkIn: route.params?.selectedDates?.startDate || "N/A",
       checkOut: route.params?.selectedDates?.endDate || "N/A",
       rating,
       availableRooms,
-      image // Ensure the image is passed as well
+      image,
     });
   };
 
   return (
       <>
-        <SafeAreaView style={styles.container}></SafeAreaView>
+        <SafeAreaView style={styles.container} />
         <ScrollView>
           <View style={styles.imageGallery}>
-            {/* Display the first four images */}
             {Array.from({ length: 4 }).map((_, index) => (
                 <View key={index} style={styles.imageWrapper}>
-                  <Image style={styles.image} source={image} />
+                  <Image
+                      style={styles.image}
+                      source={image || sampleImage}
+                  />
                 </View>
             ))}
             <Pressable style={styles.showMoreButton}>
@@ -85,6 +94,24 @@ const HostelBookingInfo = () => {
             <View style={styles.availableRooms}>
               <Text style={styles.availableRoomsLabel}>Available Rooms</Text>
               <Text style={styles.availableRoomsCount}>{availableRooms}</Text>
+            </View>
+          </View>
+
+          <View style={styles.separator} />
+
+          {/* Display the new room details */}
+          <View style={styles.stayDetails}>
+            <View>
+              <Text style={styles.detailLabel}>Room ID</Text>
+              <Text style={styles.detailValue}>{roomId}</Text>
+            </View>
+            <View>
+              <Text style={styles.detailLabel}>AC</Text>
+              <Text style={styles.detailValue}>{ac}</Text>
+            </View>
+            <View>
+              <Text style={styles.detailLabel}>Status</Text>
+              <Text style={styles.detailValue}>{status}</Text>
             </View>
           </View>
 
@@ -123,11 +150,7 @@ const HostelBookingInfo = () => {
           </View>
         </ScrollView>
 
-        <Button
-            mode="contained"
-            onPress={handleBooking}
-            style={styles.footerButton}
-        >
+        <Button mode="contained" onPress={handleBooking} style={styles.footerButton}>
           Book
         </Button>
       </>
