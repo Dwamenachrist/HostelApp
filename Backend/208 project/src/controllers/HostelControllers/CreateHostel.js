@@ -1,43 +1,65 @@
 const hostelSchema = require("../../models/HostelModel");
 const asyncHandler = require("express-async-handler")
+const Manager = require("../../models/ManagerModel")
 
-const cloudinary = require('../../config/CloudinaryConfig');
+const cloudinaryUploadImg = require('../../config/CloudinaryConfig');
 
-const createHostel = asyncHandler (async(req,res) => {
-    const {hostelManagerName, hostelManagerContact, hostelManagerEmail, hostelName, hostelLocation, hostelDescription } = req.body;
-    if (!hostelManagerName || !hostelManagerContact || !hostelManagerEmail || !hostelName || !hostelLocation || !hostelDescription) {
-        res.json({message: "Please provide all fields."}).status(400);
+const createHostel = asyncHandler(async (req, res) => {
+    const managerId = req.params.id;
+    const { hostelName, hostelLocation, hostelDescription } = req.body;
+
+    if (!hostelName || !hostelLocation || !hostelDescription ) {
+        return res.status(400).json({ message: "Please provide all fields." });
     }
+
+    const managerExists = await Manager.findById(managerId)
+
+    if (!managerExists) {
+        return res.status(404).json({ message: "Unauthorized"});
+    }
+
     try {
-        if (!req.files || Object.keys(req.files).length === 0) {
-            return res.status(400).json({message: "No files were uploaded."});
+        const uploader = async (path) => cloudinaryUploadImg(path);
+        const urls = [];
+        const files = req.files;
+
+        for (const file of files) {
+            const { path } = file;
+            try {
+                const newpath = await uploader(path);
+                urls.push(newpath);
+                await fs.unlink(file.path); // Move file deletion here
+            } catch (error) {
+                console.error(`Error uploading or deleting file: ${path}`, error);
+            }
         }
 
-    const file = require("../../assets/screenshotOfHome.jpg"); 
-    console.log("image from postman...", file)
-    const uploadResult = await cloudinary.uploader.upload(file).catch((error) => {
-        console.log(error);
-    });
+        const Images = urls.map((file) => file.url);
 
-    console.log("image Result ...", uploadResult)
-    const hostelDetails = {
-        hostelManagerName: hostelManagerName,
-        hostelManagerContact: hostelManagerContact,
-        hostelManagerEmail: hostelManagerEmail,
-        hostelName: hostelName,
-        hostelLocation: hostelLocation,
-        hostelDescription: hostelDescription,
-        hostelImages: [uploadResult]
-    }
+        const hostelDetails = {
+            manager: managerExists._id,
+            managerDetails:{
+                fullName: managerExists.firstname + " " + managerExists.lastname, 
+                contact: managerExists.contact,
+                email: managerExists.email
+            },
+            hostelName,
+            hostelLocation,
+            hostelDescription,
+            hostelImage: Images[0]
+        };
 
-    const newHostel = await hostelSchema.create(hostelDetails) 
+        console.log(hostelDetails);
 
-    res.json(newHostel).status(200)
+        const newHostel = await hostelSchema.create(hostelDetails);
+
+        res.status(201).json(newHostel);
 
     } catch (e) {
-        throw new Error(e.message);
+        console.error('Error creating hostel:', e);
+        res.status(500).json({ message: 'Internal Server Error', error: e.message });
     }
-})
+});
 
 
 

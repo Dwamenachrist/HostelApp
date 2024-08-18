@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const crypto = require('crypto');
-var userSchema = new mongoose.Schema({
+var managerSchema = new mongoose.Schema({
     firstname: {
         type: 'string',
         required: false,
@@ -11,14 +11,21 @@ var userSchema = new mongoose.Schema({
         required: false,
     },
     email: {
-        type: 'string',
-        required: true,
-        unique: true,
+        type: String,
+        required: true, // Ensure that this field is required
+        trim: true,
+        lowercase: true,
+        validate: {
+          validator: function(value) {
+            return /^[^s@]+@[^s@]+.[^s@]+$/.test(value);
+          },
+          message: props => `${props.value} is not a valid email`
+        }
     },
-    telephonenumber: {
-        type: 'string',
-        required: true,
+    contact: {
+        type: String,
         unique: true,
+        required: false
     },
     password: {
         type: 'string',
@@ -26,8 +33,8 @@ var userSchema = new mongoose.Schema({
     },
     row: {
         type: 'string',
-        default: 'student',
-    },a
+        default: 'manager',
+    },
 
 })
 
@@ -35,7 +42,7 @@ var userSchema = new mongoose.Schema({
 
 
 
-userSchema.pre('save', async function (next) {
+managerSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
         next()
     };
@@ -44,13 +51,13 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-userSchema.methods.isPasswordMatched = async function (enteredPassword) {
+managerSchema.methods.isPasswordMatched = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-userSchema.methods.createPasswordResetToken = async function () {
+managerSchema.methods.createPasswordResetToken = async function () {
     const resettoken = crypto.randomBytes(32).toString('hex');
     return resettoken;
 }
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('Manager', managerSchema)

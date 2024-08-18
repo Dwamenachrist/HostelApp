@@ -3,7 +3,8 @@ const connectDB = require('./src/config/db');
 const express = require('express');
 const userRoute = require('./src/routes/UserRoutes');
 const hostelRoute = require('./src/routes/HostelRoutes');
-const fileupload = require('express-fileupload');
+const roomRoute = require('./src/routes/RoomRoutes');
+// const fileupload = require('express-fileupload');
 const app = express();
 const dotenv = require('dotenv');
 const morgan = require('morgan');
@@ -22,10 +23,11 @@ app.use(cookieparser())
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(fileupload());
+// app.use(fileupload());
 
 app.use('/api/user', userRoute);
 app.use('/api/hostel', hostelRoute);
+app.use('/api/room', roomRoute);
 
 
 app.listen(3000, function() {

@@ -1,9 +1,9 @@
 const {generateRefreshToken} = require("../config/refreshtoken");
-const userSchema = require('../models/UserModels');
+const studentSchema = require('../models/StudentModel');
 const asyncHandler = require("express-async-handler");
-const {isPasswordMatched} = require("../config/PasswordMatch")
+// const {isPasswordMatched} = require("../config/PasswordMatch")
 
-const loginUser = asyncHandler(async (req, res) => {
+const loginStudent = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
   
     // Checks for the user to input all fields
@@ -15,14 +15,14 @@ const loginUser = asyncHandler(async (req, res) => {
     }
   
     // Check if the user is authorized by finding the email in the database
-    let user = await userSchema.findOne({ email: req.body.email })
+    let user = await studentSchema.findOne({ email: req.body.email })
     if (!user) return res.status(400).send('invalid email or password!')
         
     
     // if the user is validated we generate a token upon login is sucessful and refresh token whenever the page is refreshed
-    if (user && userSchema.isPasswordMatched(password)) {
+    if (user && user.isPasswordMatched(password)) {
       const refreshToken = await generateRefreshToken(user?._id);
-      const updateuser = await userSchema.findByIdAndUpdate(
+      const updateuser = await studentSchema.findByIdAndUpdate(
         user._id,
         {
           refreshToken: refreshToken,
@@ -36,8 +36,8 @@ const loginUser = asyncHandler(async (req, res) => {
       })
       return res.status(200).json({
         _id: user?._id,
-        firstname: user?.firstname,
-        lastname: user?.lastname,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
         email: user?.email,
         mobile: user?.mobile,
         token: refreshToken
@@ -50,4 +50,4 @@ const loginUser = asyncHandler(async (req, res) => {
   })
     
 
-module.exports = {loginUser}
+module.exports = {loginStudent}
