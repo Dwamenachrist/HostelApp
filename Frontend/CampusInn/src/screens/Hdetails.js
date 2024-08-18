@@ -27,6 +27,8 @@ const Hdetails = ({ route }) => {
     });
   };
 
+  
+
 
   return (
       <>
@@ -35,17 +37,22 @@ const Hdetails = ({ route }) => {
         <View style={styles.contentContainer}>
           <Text style={styles.hostelName}>{hostel.name}</Text>
           <View style={styles.row}>
-            <View style={styles.reviewContainer}>
-              <Ionicons name="star" size={20} color="gold" />
-              <Text style={styles.reviewText}>{hostel.rating} (120 Reviews)</Text>
-            </View>
+
+          <TouchableOpacity style={styles.reviewContainer} onPress={() => navigation.navigate('Reviews', { hostel })}>
+           <Ionicons name="star" size={20} color="gold" />
+            <Text style={styles.reviewText}>{hostel.rating} (120 Reviews)</Text>
+          </TouchableOpacity>
+            
+
+            
             <TouchableOpacity
                 style={styles.facilitiesButton}
                 onPress={() => navigation.navigate('Facilities')}>
               <Text style={styles.facilitiesText}>Check Facilities</Text>
+
               <MaterialIcons name="telegram" size={24} color="#69b2f6" />
-            </TouchableOpacity>
-          </View>
+           </TouchableOpacity>
+</View>
           <View style={styles.secondRow}>
             <Ionicons name="location-outline" size={14} color="grey" />
             <Text style={styles.locationText}>Ayele, Accra</Text>
@@ -131,6 +138,7 @@ const styles = StyleSheet.create({
   reviewText: {
     marginLeft: 5,
     color: '#69b2f6',
+    textDecorationLine: 'underline',
   },
   facilitiesButton: {
     flexDirection: 'row',

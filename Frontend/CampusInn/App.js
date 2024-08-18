@@ -39,10 +39,16 @@ import RoomCapacity from "./src/screens/RoomCapacity";
 import Rooms from "./src/screens/Rooms";
 import Facilities from "./src/screens/Facilities";
 import Fdetails from "./src/screens/Fdetails";
-import UploadRoom from "./src/screens/UploadRoom";
+
 import UploadRoomScreen from "./src/screens/UploadRoomForm";
+import UploadRoom from "./src/screens/UploadRoom";
+import Reviews from "./src/screens/Reviews";
+import Occupants from "./src/screens/Occupants";
+
+
 import ManagerWelcomeScreen from "./src/screens/Manager WelcomeScreen";
 import ManagerSignIn from "./src/screens/Manager SignIn";
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -137,10 +143,20 @@ function App() {
             component={TabNavigator}
             options={{ headerShown: false }}
           />
+           <Stack.Screen 
+            name="Reviews" 
+            component={Reviews}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             options={{ headerShown: false }}
             name="StudentSignUp"
             component={StudentSignUp}
+          />
+           <Stack.Screen 
+            name="Occupants"
+            component={Occupants} 
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             options={{ headerShown: false }}

@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
   form: {
     marginBottom: 20,
   },
+
   input: {
     borderWidth: 2,
     borderColor: "gray",
