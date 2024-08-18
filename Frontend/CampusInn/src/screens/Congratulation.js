@@ -2,15 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
-const BackCongratualtion = ({ navigation }) => {
+const Congrat = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Image source={require('../../assets/flight.png')} style={styles.image} />
       <Text style={styles.title}>Congratulations!!</Text>
       <Text style={styles.subtitle}>Your hostel stay is secured.</Text>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Hostel')}>
-        <Text style={styles.buttonText}>BACK TO HOME</Text>
-      </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
   );
@@ -56,4 +53,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BackCongratualtion;
+export default Congrat;

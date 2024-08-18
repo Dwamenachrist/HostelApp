@@ -15,7 +15,7 @@ const Payment = ({navigation}) => {
     // Add your actual login logic here
     console.log("Pay button pressed!");
     // After successful login, navigate to Home
-    navigation.navigate("");
+    navigation.navigate("BackCongratualtion");
   }
 
   return (

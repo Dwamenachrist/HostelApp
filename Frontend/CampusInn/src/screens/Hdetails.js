@@ -2,69 +2,78 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const Hdetails = ({ route }) => {
   const { hostel } = route.params;
+  const navigation = useNavigation();
+
+  const roomTypes = [
+    { name: '1 in a room', price: 10000, image: require('../../assets/room1.png') },
+    { name: '2 in a room', price: 8000, image: require('../../assets/room2.png') },
+    { name: '3 in a room', price: 6000, image: require('../../assets/room3.png') },
+    { name: '4 in a room', price: 4000, image: require('../../assets/room4.png') },
+  ];
+
+  const handleRoomPress = (room) => {
+    navigation.navigate('HostelBookingInfo', {
+      room: room.name,
+      price: room.price,
+      image: room.image,
+      hostel: hostel.name,
+      rating: hostel.rating,
+    });
+  };
+
+  
+
 
   return (
-    <ScrollView style={styles.container}>
-      <Image source={hostel.image} style={styles.hostelImage} />
-      <View style={styles.contentContainer}>
-        <Text style={styles.hostelName}>{hostel.name}</Text>
-        <View style={styles.row}>
-          <View style={styles.reviewContainer}>
-            <Ionicons name="star" size={20} color="gold" />
+      <ScrollView style={styles.container}>
+        <Image source={hostel.image} style={styles.hostelImage} />
+        <View style={styles.contentContainer}>
+          <Text style={styles.hostelName}>{hostel.name}</Text>
+          <View style={styles.row}>
+          <TouchableOpacity style={styles.reviewContainer} onPress={() => navigation.navigate('Reviews', { hostel })}>
+           <Ionicons name="star" size={20} color="gold" />
             <Text style={styles.reviewText}>{hostel.rating} (120 Reviews)</Text>
-          </View>
-          <TouchableOpacity style={styles.facilitiesButton}>
-            <Text style={styles.facilitiesText}>check facilities</Text>
-            <MaterialIcons name="telegram" size={24} color="#69b2f6" />
           </TouchableOpacity>
-        </View>
-        <View style={styles.secondRow}>
-          <Ionicons name="location-outline" size={14} color="grey" />
-          <Text style={styles.locationText}>Ayele, Accra</Text>
-        </View>
-        <Text style={styles.sectionTitle}>Description</Text>
-        <Text style={styles.description}>
-          At {hostel.name}, we're here to ensure that your first step into the university world is comfortable and unforgettable.
-          Our rooms are thoughtfully designed to offer you comfort and serenity. It's not just a room; it's your haven for
-          focused studying and quality downtime. Feel free to check out our facilities.
-        </Text>
-        <Text style={styles.sectionTitle}>Contact Info</Text>
-        <View style={styles.contactContainer}>
-          <Ionicons name="person-circle" size={50} color="#69b2f6" />
-          <View style={styles.contactTextContainer}>
-            <Text style={styles.contactName}>Adu Kelvin</Text>
-            <Text style={styles.contactTitle}>Hostel Manager</Text>
+            <TouchableOpacity style={styles.facilitiesButton}>
+             <Text style={styles.facilitiesText}>Check Facilities</Text>
+              <MaterialIcons name="telegram" size={24} color="#69b2f6" />
+           </TouchableOpacity>
+</View>
+          <View style={styles.secondRow}>
+            <Ionicons name="location-outline" size={14} color="grey" />
+            <Text style={styles.locationText}>Ayele, Accra</Text>
           </View>
-          <Ionicons name="call" size={20} color="white" style={styles.Ion} />
-          <Ionicons name="mail" size={20} color="white" style={styles.Ion} />
+          <Text style={styles.sectionTitle}>Description</Text>
+          <Text style={styles.description}>
+            At {hostel.name}, we're here to ensure that your first step into the university world is comfortable and unforgettable.
+            Our rooms are thoughtfully designed to offer you comfort and serenity. It's not just a room; it's your haven for
+            focused studying and quality downtime. Feel free to check out our facilities.
+          </Text>
+          <Text style={styles.sectionTitle}>Contact Info</Text>
+          <View style={styles.contactContainer}>
+            <Ionicons name="person-circle" size={50} color="#69b2f6" />
+            <View style={styles.contactTextContainer}>
+              <Text style={styles.contactName}>Adu Kelvin</Text>
+              <Text style={styles.contactTitle}>Hostel Manager</Text>
+            </View>
+            <Ionicons name="call" size={20} color="white" style={styles.Ion} />
+            <Ionicons name="mail" size={20} color="white" style={styles.Ion} />
+          </View>
         </View>
-      </View>
-      <View style={styles.cardContainer}>
-        <TouchableOpacity style={styles.card}>
-          <Image source={require('../../assets/room1.png')} style={styles.cardImage} />
-          <Text style={styles.cardText}>1 in a room</Text>
-          <Text style={styles.cardPrice}>Price: 10,000 cedis</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
-          <Image source={require('../../assets/room2.png')} style={styles.cardImage} />
-          <Text style={styles.cardText}>2 in a room</Text>
-          <Text style={styles.cardPrice}>Price: 10,000 cedis</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
-          <Image source={require('../../assets/room3.png')} style={styles.cardImage} />
-          <Text style={styles.cardText}>3 in a room</Text>
-          <Text style={styles.cardPrice}>Price: 10,000 cedis</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.card}>
-          <Image source={require('../../assets/room4.png')} style={styles.cardImage} />
-          <Text style={styles.cardText}>4 in a room</Text>
-          <Text style={styles.cardPrice}>Price: 10,000 cedis</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+        <View style={styles.cardContainer}>
+          {roomTypes.map((room, index) => (
+              <TouchableOpacity key={index} style={styles.card} onPress={() => handleRoomPress(room)}>
+                <Image source={room.image} style={styles.cardImage} />
+                <Text style={styles.cardText}>{room.name}</Text>
+                <Text style={styles.cardPrice}>Price: {room.price} cedis</Text>
+              </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
   );
 };
 
@@ -108,6 +117,7 @@ const styles = StyleSheet.create({
   reviewText: {
     marginLeft: 5,
     color: '#69b2f6',
+    textDecorationLine: 'underline',
   },
   facilitiesButton: {
     flexDirection: 'row',

@@ -1,26 +1,38 @@
-import React, { useContext, useState } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, Alert , TextInput} from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons, Entypo } from '@expo/vector-icons';
-import { AuthContext } from '../components/AuthContext'; // Update the import path accordingly
-import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
+import { Ionicons, Entypo } from "@expo/vector-icons";
+import { AuthContext } from "../components/AuthContext";
+import * as ImagePicker from "expo-image-picker";
 
 const ProfileScreen = () => {
-  const { user, logout, updateUser } = useContext(AuthContext);
+  const { user, isLoading, logout, updateUser } = useContext(AuthContext);
   const navigation = useNavigation();
-  const [editing, setEditing] = useState(false);
-  const [fullName, setFullName] = useState(user ? user.fullName : '');
-  const [school, setSchool] = useState(user ? user.school : '');
-  const [profileImage, setProfileImage] = useState(user ? user.profileImage : null);
 
-  const handleEditToggle = () => setEditing(!editing);
+  const [editing, setEditing] = useState(false);
+  const [fullName, setFullName] = useState(user?.fullName || "");
+  const [school, setSchool] = useState(user?.school || "");
+  const [profileImage, setProfileImage] = useState(user?.profileImage || null);
+
+  useEffect(() => {
+    // Update state variables only when user data changes
+    if (user) {
+      setFullName(user.fullName);
+      setSchool(user.school);
+      setProfileImage(user.profileImage);
+    }
+  }, [user]);
+
+  const handleEditToggle = () => {
+    setEditing(!editing);
+  };
 
   const handleSave = async () => {
     try {
-      await updateUser({ fullName, school, profileImage });
+      await updateUser({ ...user, fullName, school, profileImage });
       setEditing(false);
     } catch (error) {
-      Alert.alert('Error', 'Failed to update profile');
+      Alert.alert("Error", "Failed to update profile");
     }
   };
 
@@ -34,14 +46,19 @@ const ProfileScreen = () => {
 
     const result = await ImagePicker.launchImageLibraryAsync();
     if (!result.canceled) {
-      setProfileImage(result.assets[0].uri); // Updated for latest Expo SDK format
+      setProfileImage(result.assets[0].uri);
     }
   };
+
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
 
+      {/* Profile Image and Info */}
       <View style={styles.profileRow}>
         <TouchableOpacity onPress={editing ? pickImage : null}>
           {profileImage ? (
@@ -50,6 +67,7 @@ const ProfileScreen = () => {
             <Ionicons name="person-circle" size={80} color="#10b8e8" />
           )}
         </TouchableOpacity>
+
         <View style={styles.profileInfo}>
           {editing ? (
             <>
@@ -72,29 +90,46 @@ const ProfileScreen = () => {
               <Text style={styles.school}>{school}</Text>
             </>
           )}
-          <TouchableOpacity onPress={handleEditToggle}>
+          <TouchableOpacity onPress={editing ? handleSave : handleEditToggle}>
             <View style={styles.editRow}>
-              <Text style={styles.editText}>{editing ? 'Save' : 'Edit your account'}</Text>
+              <Text style={styles.editText}>
+                {editing ? "Save" : "Edit your account"}
+              </Text>
               {editing ? (
-                <Ionicons name="checkmark" size={20} color="#10b8e8" onPress={handleSave} />
+                <Ionicons
+                  name="checkmark"
+                  size={20}
+                  color="#10b8e8"
+                />
               ) : (
-                <Image source={require('../../assets/write.png')} style={styles.editIcon} />
+                <Image
+                  source={require("../../assets/write.png")}
+                  style={styles.editIcon}
+                />
               )}
             </View>
           </TouchableOpacity>
         </View>
       </View>
 
+      {/* Dashboard and Transactions */}
       <Text style={styles.dashboardText}>Dashboard</Text>
 
-      <TouchableOpacity style={styles.transactionRow} onPress={() => navigation.navigate('Transactions')}>
+      <TouchableOpacity
+        style={styles.transactionRow}
+        onPress={() => navigation.navigate("Transactions")}
+      >
         <View style={styles.transactionIconContainer}>
-          <Image source={require('../../assets/time.png')} style={styles.transactionIcon} />
+          <Image
+            source={require("../../assets/time.png")}
+            style={styles.transactionIcon}
+          />
         </View>
         <Text style={styles.transactionText}>Transactions</Text>
         <Entypo name="chevron-right" size={20} color="black" />
       </TouchableOpacity>
 
+      {/* Logout Button */}
       <TouchableOpacity style={styles.logoutButton} onPress={logout}>
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
