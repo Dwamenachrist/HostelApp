@@ -20,17 +20,17 @@ export default function Facilities({ navigation }) {
       </TouchableOpacity>
 
       {/* Other Facilities */}
-      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '2 in a room' })}>
+      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Fdetails', { roomType: '2 in a room' })}>
         <Image source={require('../assets/Studyroom.png')} style={styles.image} />
         <Text style={styles.roomText}>STUDY ROOM</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '3 in a room' })}>
+      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Fdetails', { roomType: '3 in a room' })}>
         <Image source={require('../assets/Canteen.png')} style={styles.image} />
         <Text style={styles.roomText}>CANTEEN</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '4 in a room' })}>
+      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Fdetails', { roomType: '4 in a room' })}>
         <Image source={require('../assets/Shuttle.png')} style={styles.image} />
         <Text style={styles.roomText}>SHUTTLE</Text>
       </TouchableOpacity>

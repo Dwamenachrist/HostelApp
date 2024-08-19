@@ -1,9 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Modal, Button } from 'react-native';
 import { Ionicons, FontAwesome, AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-const reviews = [
+const initialReviews = [
   {
     id: '1',
     title: 'The rooms were comfortable',
@@ -14,14 +14,38 @@ const reviews = [
   {
     id: '2',
     title: 'The facilities helped me study',
-    time: '2months ago',
+    time: '2 months ago',
     rating: 5,
     description: 'The quiet hum of the communal study room, the soft glow of the lamps, and the stacks of books lining the shelves – this hostel was a haven for a student like me, a place where studying felt less like a chore and more like a sanctuary.',
   },
 ];
 
 const ReviewScreen = () => {
+  const [reviews, setReviews] = useState(initialReviews);
+  const [newReviewText, setNewReviewText] = useState('');
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [newRating, setNewRating] = useState(5); // Default rating
   const navigation = useNavigation();
+
+  const handleAddReview = () => {
+    if (newReviewText.trim()) {
+      setModalVisible(true);
+    }
+  };
+
+  const handleSubmitReview = () => {
+    const newReview = {
+      id: (reviews.length + 1).toString(),
+      title: 'New Review',
+      time: 'Just now',
+      rating: newRating,
+      description: newReviewText,
+    };
+
+    setReviews([newReview, ...reviews]);
+    setNewReviewText('');
+    setModalVisible(false);
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.reviewBox}>
@@ -37,6 +61,11 @@ const ReviewScreen = () => {
       <Text style={styles.reviewDescription}>{item.description}</Text>
     </View>
   );
+
+  const getRatingBarWidth = (rating) => {
+    const maxWidth = 100; // full width for 5 stars
+    return `${(rating / 5) * maxWidth}%`;
+  };
 
   return (
     <View style={styles.container}>
@@ -54,7 +83,9 @@ const ReviewScreen = () => {
             <View key={index} style={styles.starRow}>
               <FontAwesome name="star" size={14} color="gold" />
               <Text>{star}</Text>
-              <View style={[styles.ratingBar, { width: `${star * 20}%` }]} />
+              <View style={styles.ratingBarContainer}>
+                <View style={[styles.ratingBar, { width: getRatingBarWidth(star) }]} />
+              </View>
             </View>
           ))}
         </View>
@@ -70,12 +101,39 @@ const ReviewScreen = () => {
       <View style={styles.inputRow}>
         <TextInput
           style={styles.input}
-          placeholder="write a review"
+          placeholder="Write a review"
+          value={newReviewText}
+          onChangeText={setNewReviewText}
         />
-        <TouchableOpacity style={styles.submitButton}>
+        <TouchableOpacity style={styles.submitButton} onPress={handleAddReview}>
           <AntDesign name="arrowright" size={24} color="white" />
         </TouchableOpacity>
       </View>
+
+      <Modal
+        visible={isModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Rate your experience</Text>
+            <View style={styles.modalRating}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <TouchableOpacity key={star} onPress={() => setNewRating(star)}>
+                  <FontAwesome
+                    name="star"
+                    size={32}
+                    color={star <= newRating ? 'gold' : 'gray'}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
+            <Button color={'#10b8e8'} title="Submit" onPress={handleSubmitReview} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -102,8 +160,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   ratingText: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
+    color: 'gray',
   },
   starsColumn: {
     marginLeft: 20,
@@ -114,10 +173,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 5,
   },
-  ratingBar: {
+  ratingBarContainer: {
     height: 10,
-    backgroundColor: 'gold',
+    width: 196,
+    backgroundColor: '#d9d8d8',
     marginLeft: 10,
+    borderRadius: 10,
+  },
+  ratingBar: {
+    height: '100%',
+    backgroundColor: 'gold',
+    borderRadius: 10,
   },
   reviewList: {
     paddingBottom: 80,
@@ -165,14 +231,38 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
     height: 50,
+    backgroundColor: 'gray',
   },
   submitButton: {
     marginLeft: 10,
-    backgroundColor: '#1E90FF',
+    backgroundColor: '#10b8e8',
     borderRadius: 25,
     padding: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300,
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  modalRating: {
+    flexDirection: 'row',
+    marginBottom: 20,
   },
 });
 
 export default ReviewScreen;
+
 

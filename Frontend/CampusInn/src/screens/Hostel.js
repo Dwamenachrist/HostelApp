@@ -9,6 +9,10 @@ const hostels = [
   { id: 4, name: 'Hostel 4', image: require('../../assets/Rec3.png'), discount: '15% OFF', rating: 4.7, price: '$320 - $550 USD /night', distance: '300 meters away' },
   { id: 5, name: 'Hostel 5', image: require('../../assets/Rec2.png'), discount: '20% OFF', rating: 4.8, price: '$350 - $600 USD /night', distance: '400 meters away' },
   { id: 6, name: 'Hostel 6', image: require('../../assets/Rec3.png'), discount: '5% OFF', rating: 4.2, price: '$250 - $450 USD /night', distance: '500 meters away' },
+  { id: 7, name: 'Hostel 7', image: require('../../assets/Rec2.png'), discount: '20% OFF', rating: 4.8, price: '$350 - $600 USD /night', distance: '400 meters away' },
+  { id: 8, name: 'Hostel 8', image: require('../../assets/Rec3.png'), discount: '5% OFF', rating: 4.2, price: '$250 - $450 USD /night', distance: '500 meters away' },
+  { id: 9, name: 'Hostel 9', image: require('../../assets/Rec2.png'), discount: '20% OFF', rating: 4.8, price: '$350 - $600 USD /night', distance: '400 meters away' },
+  { id: 10, name: 'Hostel 10', image: require('../../assets/Rec3.png'), discount: '5% OFF', rating: 4.2, price: '$250 - $450 USD /night', distance: '500 meters away' },
 ];
 
 const Hostel = ({ navigation }) => {

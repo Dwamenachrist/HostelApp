@@ -60,7 +60,7 @@ const Summary = ({ navigation }) => {
             </View>
 
             <Button onPress={() => navigation.navigate('Payment')}>
-                <Text>CONTINUE PAYMENT</Text> {/* Wrap button text in <Text> */}
+                <Text>CONTINUE PAYMENT</Text> 
             </Button>
         </SafeAreaView>
     );
@@ -105,10 +105,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 20,
     },
-    amountContainer: {  // Corrected name
+    amountContainer: {  
         flexDirection: 'column',
         justifyContent: "space-between",
         marginTop: 20,
+        marginBottom: 20,
     },
 });
 
