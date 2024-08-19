@@ -6,6 +6,7 @@ import {
   ScrollView,
   Pressable,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -150,9 +151,9 @@ const HostelBookingInfo = () => {
           </View>
         </ScrollView>
 
-        <Button mode="contained" onPress={handleBooking} style={styles.footerButton}>
-          Book
-        </Button>
+        <TouchableOpacity mode="contained" onPress={handleBooking} style={styles.footerButton}>
+          <Text style={styles.footerButtonText}>Book</Text>
+        </TouchableOpacity>
       </>
   );
 };
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
   },
   showMoreText: {
     textAlign: "center",
-    color: "#007FFF",
+    color: "#10b8e8",
   },
   hotelInfo: {
     marginHorizontal: 12,
@@ -266,7 +267,7 @@ const styles = StyleSheet.create({
   detailValue: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#007FFF",
+    color: "#10b8e8",
   },
   facilitiesTitle: {
     fontSize: 18,
@@ -281,7 +282,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   facility: {
-    backgroundColor: "#007FFF",
+    backgroundColor: "#10b8e8",
     color: "#fff",
     paddingVertical: 6,
     paddingHorizontal: 12,
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   footerButton: {
-    backgroundColor: "#007FFF",
+    backgroundColor: "#10b8e8",
     padding: 15,
     marginHorizontal: 20,
     marginBottom: 20,

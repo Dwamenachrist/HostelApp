@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
@@ -7,8 +8,24 @@ import { useNavigation } from '@react-navigation/native';
 import Button from '../components/Button';
 
 const Hdetails = ({ route }) => {
-  const { hostel } = route.params;
+  const { hostelId } = route.params; // Pass hostelId instead of hostel object
   const navigation = useNavigation();
+  const [hostel, setHostel] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`https://hostel-server-nxr3.onrender.com/hostels/${hostelId}`)
+      .then(response => response.json())
+      .then(data => {
+        setHostel(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching hostel details:', error);
+        setLoading(false);
+      });
+  }, [hostelId]);
+
 
   const roomTypes = [
     { name: '1 in a room', price: 10000, image: require('../../assets/room1.png') },
@@ -32,7 +49,7 @@ const Hdetails = ({ route }) => {
 
   return (
       <>
-      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <View style={styles.container} showsVerticalScrollIndicator={false}>
         <Image source={hostel.image} style={styles.hostelImage} />
         <View style={styles.contentContainer}>
           <Text style={styles.hostelName}>{hostel.name}</Text>
@@ -74,14 +91,14 @@ const Hdetails = ({ route }) => {
             <Ionicons name="mail" size={20} color="white" style={styles.Ion} />
           </View>
         </View>
-      </ScrollView>
+      </View>
 
-          <Button style={{ marginVertical: 0}} mode="contained" onPress={() => navigation.navigate('RoomCapacity')}>
+          <TouchableOpacity style={{ marginVertical: 0}} mode="contained" onPress={() => navigation.navigate('RoomCapacity')}>
             <View style={styles.buttonContent}>
-              <Text style={styles.buttonText}>Book</Text>
+              <Text style={styles.buttonText}>Choose a room</Text>
               <FontAwesome6 name="location-arrow" size={24} color="white" />
             </View>
-          </Button>
+          </TouchableOpacity>
       </>
   );
 };
@@ -94,14 +111,20 @@ const styles = StyleSheet.create({
   buttonContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center', // Centers the content horizontally
+    justifyContent: 'center',
+    backgroundColor: '#10b8e8',
+    paddingHorizontal: 32,
+    paddingVertical: 16,
+    
+    
   },
   buttonText: {
-    marginRight: 10, // Add space between the text and the icon
+    marginRight: 10, 
     fontWeight: 'bold',
     fontSize: 20,
     lineHeight: 26,
     color: 'white',
+    
   },
   hostelImage: {
     width: '100%',
@@ -171,10 +194,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
+  
+   
   },
   contactTextContainer: {
     marginLeft: 10,
     marginRight: 50,
+    
   },
   contactName: {
     fontSize: 18,

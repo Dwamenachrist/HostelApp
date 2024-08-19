@@ -31,10 +31,10 @@ const ViewScreen = ({ route }) => {
             <View style={styles.contentContainer}>
                 <Text style={styles.hostelName}>{hostel.name}</Text>
                 <View style={styles.row}>
-                    <View style={styles.reviewContainer}>
+                    <TouchableOpacity style={styles.reviewContainer} onPress={() => navigation.navigate('Reviews', { hostel })}>
                         <Ionicons name="star" size={20} color="gold" />
                         <Text style={styles.reviewText}>{hostel.rating} (120 Reviews)</Text>
-                    </View>
+                    </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.facilitiesButton}
                         onPress={() => navigation.navigate('Facilities')}>
@@ -106,14 +106,16 @@ const ViewScreen = ({ route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: 'white', // Ensure this is white
     },
     hostelImage: {
         width: '100%',
         height: 250,
+        backgroundColor: 'white', // Ensure this is white
     },
     contentContainer: {
         padding: 20,
+        backgroundColor: 'white', // Ensure this is white
     },
     hostelName: {
         fontSize: 24,
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginVertical: 10,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     secondRow: {
         flexDirection: 'row',
@@ -199,11 +201,13 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         marginTop: 30,
+        backgroundColor: 'white', // Ensure this is white
     },
     card: {
         width: '48%',
         overflow: 'hidden',
         marginBottom: 30,
+        backgroundColor: 'white', // Ensure this is white
     },
     cardImage: {
         width: '101%',
@@ -228,7 +232,7 @@ const styles = StyleSheet.create({
     managerSection: {
         paddingHorizontal: 20,
         paddingVertical: 20,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: 'white', // Changed from #f5f5f5 to white
         borderRadius: 10,
         marginBottom: 30,
     },
@@ -250,15 +254,16 @@ const styles = StyleSheet.create({
         color: '#888',
     },
     button: {
-        backgroundColor: '#00aaff',
+        backgroundColor: '#10b8e8',
         padding: 16,
         borderRadius: 8,
         marginTop: 24,
         alignItems: 'center',
     },
     buttonText: {
-        color: '#fff',
-        fontSize: 16,
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
     },
 });
 
