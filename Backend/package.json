@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "node 208 project/server.js",
-    "dev": "nodemon 208 project/server.js"
+    "run": "node 208 server.js",
+    "dev": "nodemon 208 server.js"
   },
   "author": "Ama Montford",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "mongoose": "^8.5.0",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.4",
     "sharp": "^0.33.4"
   }
 }
