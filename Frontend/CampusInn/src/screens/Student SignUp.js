@@ -6,54 +6,22 @@ import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
-import { AuthContext } from '../components/AuthContext';
-import emailValidator from '../helpers/emailValidator';
-import passwordValidator from '../helpers/passwordValidator';
-import  nameValidator  from '../helpers/nameValidator';
+import { AuthContext } from '../Hooks/AuthContext';
 
 
 export default function StudentSignUp({ navigation }) {
   const { signUp } = useContext(AuthContext);
-  const [fullName, setFullName] = useState({ value: '', error: '' });
-  const [school, setSchool] = useState({ value: '', error: '' });
-  const [email, setEmail] = useState({ value: '', error: '' });
-  const [password, setPassword] = useState({ value: '', error: '' });
+  const [user, setUser] = useState({firstName: "", lastName: "", email: "", password: "", phoneNumber: ""});
   const [confirmPassword, setConfirmPassword] = useState({ value: '', error: '' });
   const [studentIdImage, setStudentIdImage] = useState(null);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false)
 
-  const onSignUpPressed = async () => {
-    setError('');  // Reset error state on submission
+    // if (!studentIdImage) {
+    //   setError('Please upload a picture of your student ID');
+    //   return;
+    // }
 
-    // Validation
-    const fullNameError = nameValidator(fullName.value);
-    const emailError = emailValidator(email.value);
-    const passwordError = passwordValidator(password.value);
-
-    if (password.value !== confirmPassword.value) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    if (fullNameError || emailError || passwordError) {
-      setFullName({ ...fullName, error: fullNameError });
-      setEmail({ ...email, error: emailError });
-      setPassword({ ...password, error: passwordError });
-      return;
-    }
-
-    if (!studentIdImage) {
-      setError('Please upload a picture of your student ID');
-      return;
-    }
-
-    try {
-      await signUp(email.value, password.value, fullName.value, school.value, studentIdImage);
-      navigation.navigate("TabNavigator", { screen: "Hostel" });
-    } catch (err) {
-      setError(err.message || 'Failed to sign up. Please try again.');
-    }
-  };
 
   const pickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -69,7 +37,9 @@ export default function StudentSignUp({ navigation }) {
       setStudentIdImage(result.assets[0].uri);
     }
   };
-
+  if(isLoading) {
+    return <View style={{flex: 1, backgroundColor: "white", alignItems: "center", justifyContent: "center"}}><Text>Loading please wait</Text></View>
+  }
   return (
     <>
       <Image source={require("../../assets/book.png")} style={styles.image} />
@@ -79,43 +49,57 @@ export default function StudentSignUp({ navigation }) {
 
           <View style={styles.form}>
             <TextInput
-              label="Full Name"
+              label="first name"
               returnKeyType="next"
-              value={fullName.value}
-              onChangeText={(text) => setFullName({ value: text, error: '' })}
-              error={!!fullName.error}
-              errorText={fullName.error}
+              value={user.firstName}
+              onChangeText={(text) => setUser((prev)=> (({
+                ...prev,
+                firstName: text
+              })))}
             />
             <TextInput
-              label="School"
+              label="last Name"
               returnKeyType="next"
-              value={school.value}
-              onChangeText={(text) => setSchool({ value: text, error: '' })}
-              error={!!school.error}
-              errorText={school.error}
+              value={user.lastName}
+              onChangeText={(text) => setUser((prev) => (({
+                ...prev,
+                lastName: text
+              })))}
             />
             <TextInput
               label="Email"
               returnKeyType="next"
-              value={email.value}
-              onChangeText={(text) => setEmail({ value: text, error: '' })}
-              error={!!email.error}
-              errorText={email.error}
+              value={user.email}
+              onChangeText={(text) => setUser((prev=> (({
+                ...prev,
+                email: text
+              }))))}
               autoCapitalize="none"
               autoCompleteType="email"
               textContentType="emailAddress"
               keyboardType="email-address"
             />
             <TextInput
-              label="Password"
+              label="Phone Number"
               returnKeyType="next"
-              value={password.value}
-              onChangeText={(text) => setPassword({ value: text, error: '' })}
-              error={!!password.error}
-              errorText={password.error}
-              secureTextEntry
+              value={user.phoneNumber}
+              onChangeText={(text) => setUser((prev=> (({
+                ...prev,
+                phoneNumber: text
+              }))))}
+              autoCapitalize="none"
             />
             <TextInput
+              label="Password"
+              returnKeyType="next"
+              value={user.password}
+              onChangeText={(text) => setUser((prev)=> (({
+                ...prev,
+                password: text,
+              })))}
+              secureTextEntry
+            />
+            {/* <TextInput
               label="Confirm Password"
               returnKeyType="done"
               value={confirmPassword.value}
@@ -123,7 +107,7 @@ export default function StudentSignUp({ navigation }) {
               error={!!confirmPassword.error}
               errorText={confirmPassword.error}
               secureTextEntry
-            />
+            /> */}
             <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
               <Text>Upload picture of student ID/Ghana Card</Text>
               <AntDesign name="pluscircleo" size={24} color="black" />
@@ -135,11 +119,11 @@ export default function StudentSignUp({ navigation }) {
 
           <Button
             mode="contained"
-            onPress={onSignUpPressed}
+            onPress={() => signUp(user.firstName, user.lastName, user.email, user.phoneNumber, user.password, setIsLoading)}
             style={styles.signUpButton}
-          >
-            Continue
-          </Button>
+            >
+              Continue
+            </Button>
 
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Already have an account? </Text>

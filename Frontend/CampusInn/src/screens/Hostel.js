@@ -1,31 +1,34 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, Image, StyleSheet, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-
-const hostels = [
-  { id: 1, name: 'MB3 Hostel', image: require('../../assets/Rec2.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '100 meters away' },
-  { id: 2, name: 'Makassela Hostel', image: require('../../assets/Rec3.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '100 meters away' },
-  { id: 3, name: 'Hostel 3', image: require('../../assets/Rec2.png'), discount: '10% OFF', rating: 4.5, price: '$300 - $500 USD /night', distance: '200 meters away' },
-  { id: 4, name: 'Hostel 4', image: require('../../assets/Rec3.png'), discount: '15% OFF', rating: 4.7, price: '$320 - $550 USD /night', distance: '300 meters away' },
-  { id: 5, name: 'Hostel 5', image: require('../../assets/Rec2.png'), discount: '20% OFF', rating: 4.8, price: '$350 - $600 USD /night', distance: '400 meters away' },
-  { id: 6, name: 'Hostel 6', image: require('../../assets/Rec3.png'), discount: '5% OFF', rating: 4.2, price: '$250 - $450 USD /night', distance: '500 meters away' },
-  { id: 7, name: 'Hostel 7', image: require('../../assets/Rec2.png'), discount: '20% OFF', rating: 4.8, price: '$350 - $600 USD /night', distance: '400 meters away' },
-  { id: 8, name: 'Hostel 8', image: require('../../assets/Rec3.png'), discount: '5% OFF', rating: 4.2, price: '$250 - $450 USD /night', distance: '500 meters away' },
-  { id: 9, name: 'Hostel 9', image: require('../../assets/Rec2.png'), discount: '20% OFF', rating: 4.8, price: '$350 - $600 USD /night', distance: '400 meters away' },
-  { id: 10, name: 'Hostel 10', image: require('../../assets/Rec3.png'), discount: '5% OFF', rating: 4.2, price: '$250 - $450 USD /night', distance: '500 meters away' },
-];
-
+import axios from 'axios';
+import { HostelContext, UseHostelContext } from '../Hooks/HostelContext';
 const Hostel = ({ navigation }) => {
   const [likedHostels, setLikedHostels] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
+  const hostels = useContext(UseHostelContext)
 
-  const toggleLike = (id) => {
-    setLikedHostels((prev) => ({ ...prev, [id]: !prev[id] }));
+
+  const toggleLike = (hostelId) => {
+    setLikedHostels(prevLikedHostels => ({
+      ...prevLikedHostels,
+      [hostelId]: !prevLikedHostels[hostelId] // Toggle the like status
+    }));
   };
 
-  const filteredHostels = hostels.filter((hostel) =>
-      hostel.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // const filteredHostels = hostels.avialableHostels.filter((hostel) =>
+  //     hostel.name.toLowerCase().includes(searchQuery.toLowerCase())
+  // );
+
+  const navigateToHostelDetails = (hostel) => {
+    console.log("hostel details", hostel);
+    navigation.navigate('bookingroute', {
+      screen: 'Hdetails',  // Specify the screen within the bookingroute
+      params: {
+        hostelDetails: hostel // Pass the hostel object directly
+      }
+    });
+  }
 
   return (
       <View style={styles.container}>
@@ -44,20 +47,25 @@ const Hostel = ({ navigation }) => {
         </View>
         <ScrollView style={styles.verticalScrollView} contentContainerStyle={styles.contentContainer}>
           <View style={styles.grid}>
-            {filteredHostels.map(hostel => (
-                <TouchableOpacity key={hostel.id} onPress={() => navigation.navigate('Hdetails', { hostel })} style={styles.card}>
-                  <Image source={hostel.image} style={styles.image} />
+            {hostels?.avialableHostels.map(hostel => (
+                <TouchableOpacity key={hostel.id} onPress={() => navigateToHostelDetails(hostel)} style={styles.card}>
+                  <Image src={hostel?.hostelImage} style={styles.image} />
                   <View style={styles.infoRow}>
                     <Text style={styles.discount}>{hostel.discount}</Text>
                     <Ionicons name="star" size={20} color="gold" style={styles.icon} />
                     <Text style={styles.rating}>{hostel.rating}</Text>
                     <TouchableOpacity onPress={() => toggleLike(hostel.id)} style={{marginLeft: -10}}>
-                      <Ionicons name={likedHostels[hostel.id] ? "heart" : "heart-outline"} size={20} color={likedHostels[hostel.id] ? "red" : "#69b2f6"} style={styles.icon} />
+                    <Ionicons
+                      name={likedHostels[hostel._id] ? "heart" : "heart-outline"}
+                      size={20}
+                      color={likedHostels[hostel._id] ? "red" : "#69b2f6"}
+                      style={styles.icon}
+                    />
                     </TouchableOpacity>
                   </View>
-                  <Text style={styles.hostelName}>{hostel.name}</Text>
-                  <Text style={styles.price}>{hostel.price}</Text>
-                  <Text style={styles.distance}>{hostel.distance}</Text>
+                  <Text style={styles.hostelName}>{hostel?.hostelName}</Text>
+                
+                  <Text style={styles.distance}>{hostel?.hostelLocation}</Text>
                 </TouchableOpacity>
             ))}
           </View>

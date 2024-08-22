@@ -1,0 +1,1 @@
+export const BASEURL = "https://hostel-server-nxr3.onrender.com/"

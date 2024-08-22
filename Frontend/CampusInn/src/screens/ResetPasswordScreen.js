@@ -1,7 +1,7 @@
 // components/ResetPassword.js
 import React, { useState, useContext } from 'react';
 import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
-import { AuthContext } from '../components/AuthContext';
+import { AuthContext } from '../Hooks/AuthContext';
 
 export default function ResetPassword() {
   const { resetPassword, error } = useContext(AuthContext);

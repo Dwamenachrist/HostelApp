@@ -2,10 +2,10 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons'; // Expo Icons
 
-export default function RoomTypesScreen({ navigation }) {
+export default function RoomTypesScreen({ navigation, route }) {
+  const rooms = route.params
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-     
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <AntDesign name="arrowleft" size={24} color="black" />
@@ -14,29 +14,12 @@ export default function RoomTypesScreen({ navigation }) {
       </View>
 
       {/* Room Type 1 */}
-      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '1 in a room' })}>
-        <Image source={require('../assets/1bed.png')} style={styles.image} />
-        <Text style={styles.roomText}>1 IN A ROOM</Text>
+      {rooms?.map((data)=> (
+        <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('HostelBookingInfo', rooms)}>
+          <Image source={{uri: data?.images[0]}} style={styles.image} />
+        <Text style={styles.roomText}>{data?.capacity} IN A ROOM</Text>
       </TouchableOpacity>
-
-      {/* Room Type 2 */}
-      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '2 in a room' })}>
-        <Image source={require('../assets/2bed.png')} style={styles.image} />
-        <Text style={styles.roomText}>2 IN A ROOM</Text>
-      </TouchableOpacity>
-
-      {/* Room Type 3 */}
-      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '3 in a room' })}>
-        <Image source={require('../assets/3bed.png')} style={styles.image} />
-        <Text style={styles.roomText}>3 IN A ROOM</Text>
-      </TouchableOpacity>
-
-      {/* Room Type 4 */}
-      <TouchableOpacity style={styles.roomType} onPress={() => navigation.navigate('Rooms', { roomType: '4 in a room' })}>
-        <Image source={require('../assets/4bed.png')} style={styles.image} />
-        <Text style={styles.roomText}>4 IN A ROOM</Text>
-      </TouchableOpacity>
-
+      ))}
     </ScrollView>
   );
 }
