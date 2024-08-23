@@ -15,8 +15,10 @@ import Button from "../components/Button";
 
 const sampleImage = require("../assets/makassela.png");
 
-const HostelBookingInfo = () => {
-  const route = useRoute();
+const HostelBookingInfo = ({ route }) => {
+  const roomdetails = route.params
+  console.log("route from params", roomdetails)
+  // const route = useRoute();
   const navigation = useNavigation();
 
   const {
@@ -38,7 +40,7 @@ const HostelBookingInfo = () => {
   }, [navigation]);
 
   const handleBooking = () => {
-    if (status !== 'Available') {
+    if (roomdetails[0].available !== false) {
       alert("This room is not currently available for booking.");
       return;
     }
@@ -83,8 +85,7 @@ const HostelBookingInfo = () => {
               <Text>{rating}</Text>
             </View>
           </View>
-          <Text style={styles.roomType}>Room type: {room}</Text>
-
+          <Text style={styles.roomType}>Room type: {roomdetails[0].capacity}</Text>
           <View style={styles.separator} />
           <View style={styles.priceAndRooms}>
             <View style={styles.priceInfo}>
@@ -94,7 +95,7 @@ const HostelBookingInfo = () => {
             <View style={styles.verticalLine} />
             <View style={styles.availableRooms}>
               <Text style={styles.availableRoomsLabel}>Available Rooms</Text>
-              <Text style={styles.availableRoomsCount}>{availableRooms}</Text>
+              <Text style={styles.availableRoomsCount}>{roomdetails.length}</Text>
             </View>
           </View>
 
@@ -104,7 +105,7 @@ const HostelBookingInfo = () => {
           <View style={styles.stayDetails}>
             <View>
               <Text style={styles.detailLabel}>Room ID</Text>
-              <Text style={styles.detailValue}>{roomId}</Text>
+              <Text style={styles.detailValue}>{roomdetails[0]._id}</Text>
             </View>
             <View>
               <Text style={styles.detailLabel}>AC</Text>
@@ -112,7 +113,7 @@ const HostelBookingInfo = () => {
             </View>
             <View>
               <Text style={styles.detailLabel}>Status</Text>
-              <Text style={styles.detailValue}>{status}</Text>
+              <Text style={styles.detailValue}>{roomdetails[0].available === true ? "occupied" : "Available"}</Text>
             </View>
           </View>
 

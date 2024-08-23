@@ -4,47 +4,17 @@ import { Text, Checkbox } from 'react-native-paper';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
-import { AuthContext } from '../components/AuthContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { emailValidator } from '../helpers/emailValidator';
-import { passwordValidator } from '../helpers/passwordValidator';
+import { AuthContext } from '../Hooks/AuthContext';
 
 export default function StudentSignIn({ navigation }) {
   const { login } = useContext(AuthContext); // Remove error from destructuring
-  const [email, setEmail] = useState({ value: '', error: '' });
-  const [password, setPassword] = useState({ value: '', error: '' });
+  const [user, setUser] = useState({email: "", password: "",})
   const [rememberMe, setRememberMe] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onLoginPressed = async () => {
-    // Validate email and password
-    const emailError = emailValidator(email.value);
-    const passwordError = passwordValidator(password.value);
-
-    if (emailError || passwordError) {
-      setEmail({ ...email, error: emailError });
-      setPassword({ ...password, error: passwordError });
-      return;
-    }
-
-    try {
-      await login(email.value, password.value);
-
-      // Handle Remember Me functionality
-      if (rememberMe) {
-        await AsyncStorage.setItem('rememberMe', JSON.stringify(true));
-        await AsyncStorage.setItem('userEmail', email.value);
-      } else {
-        await AsyncStorage.removeItem('rememberMe');
-        await AsyncStorage.removeItem('userEmail');
-      }
-
-      navigation.navigate('TabNavigator', { screen: 'Hostel' });
-    } catch (err) {
-      console.error(err);
-      Alert.alert('Login Error', err.message || 'Failed to log in. Please try again.');
-    }
-  };
-
+  if(isLoading) {
+    return <View style={{flex: 1, backgroundColor: "white", alignItems: "center", justifyContent: "center"}}><Text>Loading please wait</Text></View>
+  }
   return (
       <>
         {/* Image at the Top */}
@@ -60,10 +30,13 @@ export default function StudentSignIn({ navigation }) {
               <TextInput
                   label="Email"
                   returnKeyType="next"
-                  value={email.value}
-                  onChangeText={(text) => setEmail({ value: text, error: '' })}
-                  error={!!email.error}
-                  errorText={email.error}
+                  value={user.email}
+                    onChangeText={(text) => setUser((prev)=> (({
+                      ...prev,
+                      email: text
+                    })))}
+                  error={!!user}
+                  // errorText={email.error}
                   autoCapitalize="none"
                   autoCompleteType="email"
                   textContentType="emailAddress"
@@ -72,10 +45,13 @@ export default function StudentSignIn({ navigation }) {
               <TextInput
                   label="Password"
                   returnKeyType="done"
-                  value={password.value}
-                  onChangeText={(text) => setPassword({ value: text, error: '' })}
-                  error={!!password.error}
-                  errorText={password.error}
+                  value={user.password}
+                  onChangeText={(text) => setUser((prev)=> (({
+                    ...prev,
+                    password: text
+                  })))}
+                  // error={!!password.error}
+                  // errorText={password.error}
                   secureTextEntry
               />
 
@@ -101,8 +77,9 @@ export default function StudentSignIn({ navigation }) {
 
             {/* Login Button */}
             <Button
+
                 mode="contained"
-                onPress={onLoginPressed}
+                onPress={()=> login(user.email, user.password, setIsLoading)}
                 style={styles.loginButton} // Style for the login button
             >
               Login

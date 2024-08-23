@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { TouchableOpacity, StyleSheet, View, Image, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import Button from '../components/Button';
@@ -6,17 +6,18 @@ import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 import { AntDesign } from "@expo/vector-icons";
 import Header from '../components/Header';
+import { AuthContext } from '../Hooks/AuthContext';
 
 export default function ManagerSignIn({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' });
-  const [password, setPassword] = useState({ value: '', error: '' });
+  const { loginManager } = useContext(AuthContext); // Remove error from destructuring
+  const [user, setUser] = useState({email: "", password: "",})
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onLoginPressed = () => {
-    // Add your actual login logic here
-    console.log("Login button pressed!");
-    // After successful login, navigate to Home
-    navigation.navigate("ManagerUpload");
-  };
+  
+
+  if(isLoading) {
+    return <View style={{flex: 1, backgroundColor: "white", alignItems: "center", justifyContent: "center"}}><Text>Loading please wait</Text></View>
+  }
 
   return (
     <View style={styles.container}>
@@ -41,25 +42,31 @@ export default function ManagerSignIn({ navigation }) {
           {/* Form */}
           <View style={styles.form}>
             <TextInput
-              label="Email"
-              returnKeyType="next"
-              value={email.value}
-              onChangeText={(text) => setEmail({ value: text, error: '' })}
-              error={!!email.error}
-              errorText={email.error}
-              autoCapitalize="none"
-              autoCompleteType="email"
-              textContentType="emailAddress"
-              keyboardType="email-address"
+               label="Email"
+                  returnKeyType="next"
+                  value={user.email}
+                    onChangeText={(text) => setUser((prev)=> (({
+                      ...prev,
+                      email: text
+                    })))}
+                  error={!!user}
+                  // errorText={email.error}
+                  autoCapitalize="none"
+                  autoCompleteType="email"
+                  textContentType="emailAddress"
+                  keyboardType="email-address"
             />
             <TextInput
-              label="Password"
-              returnKeyType="done"
-              value={password.value}
-              onChangeText={(text) => setPassword({ value: text, error: '' })}
-              error={!!password.error}
-              errorText={password.error}
-              secureTextEntry
+            label="Password"
+                  returnKeyType="done"
+                  value={user.password}
+                  onChangeText={(text) => setUser((prev)=> (({
+                    ...prev,
+                    password: text
+                  })))}
+                  // error={!!password.error}
+                  // errorText={password.error}
+                  secureTextEntry
             />
           </View>
 
@@ -74,9 +81,9 @@ export default function ManagerSignIn({ navigation }) {
           {/* Login Button */}
           <Button
             mode="contained"
-            onPress={onLoginPressed}
-            style={styles.loginButton} // Style for the login button
-          >
+            onPress={()=> loginManager(user.email, user.password, setIsLoading)}
+                style={styles.loginButton} // Style for the login button
+            >
             Login
           </Button>
 

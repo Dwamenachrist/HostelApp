@@ -2,11 +2,12 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons, Entypo } from "@expo/vector-icons";
-import { AuthContext } from "../components/AuthContext";
+import { AuthContext } from '../Hooks/AuthContext';
 import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = () => {
-  const { user, isLoading, logout, updateUser } = useContext(AuthContext);
+  const { user, isLoading, updateUser, logout } = useContext(AuthContext);
   const navigation = useNavigation();
 
   const [editing, setEditing] = useState(false);
@@ -65,10 +66,8 @@ const ProfileScreen = () => {
           },
           {
             text: "Logout",
-            onPress: () => {
-              logout();
-
-              navigation.navigate("Home"); // Navigate to Home after logout
+            onPress: async() => {
+              logout()
             },
           },
         ]
