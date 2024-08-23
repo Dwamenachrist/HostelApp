@@ -11,6 +11,7 @@ export const AuthContext = createContext({
   user: null,
   isLoading: true, 
   login: (email, password, setLoading) => Promise.resolve(),
+  loginManager: (email, password, setLoading) => Promise.resolve(), // Add loginManager function
   logout: () => Promise.resolve(),
   signUp: (firstName, lastName, email, phoneNumber, password, setLoading) => Promise.resolve(),
   updateUser: () => Promise.resolve(),
@@ -38,6 +39,8 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
+    
+
     loadUserData();
   }, []);
 
@@ -45,6 +48,34 @@ export const AuthProvider = ({ children }) => {
     setLoading(true); // Start loading
     try {
       const response = await fetch(BASEURL + "user/login-student", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      if (response.ok) {
+        const userData = await response.json();
+        Alert.alert("Success", "Login successful");
+        setUser(userData);
+        await AsyncStorage.setItem('user', JSON.stringify(userData));
+      } else {
+        const errorData = await response.json();
+        Alert.alert("Error", errorData.message || "Login failed");
+      }
+    } catch (err) {
+      Alert.alert("Error", "Login failed: " + err.message);
+    } finally {
+      setLoading(false); // Stop loading
+    }
+  };
+
+
+  const loginManager = async (email, password, setLoading) => {
+    setLoading(true); // Start loading
+    try {
+      const response = await fetch(BASEURL + "manager/login", { // Use manager-specific endpoint
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

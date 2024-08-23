@@ -56,11 +56,11 @@ const Hostel = ({ navigation }) => {
                     <Text style={styles.rating}>{hostel.rating}</Text>
                     <TouchableOpacity onPress={() => toggleLike(hostel.id)} style={{marginLeft: -10}}>
                     <Ionicons
-                      name={likedHostels[hostel._id] ? "heart" : "heart-outline"}
-                      size={20}
-                      color={likedHostels[hostel._id] ? "red" : "#69b2f6"}
-                      style={styles.icon}
-                    />
+                          name={likedHostels[hostel._id] ? "heart" : "heart-outline"}
+                          size={20}
+                          color={likedHostels[hostel._id] ? "red" : "#69b2f6"}
+                          style={styles.icon}
+                        />
                     </TouchableOpacity>
                   </View>
                   <Text style={styles.hostelName}>{hostel?.hostelName}</Text>
